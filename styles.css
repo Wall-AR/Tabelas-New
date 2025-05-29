@@ -364,31 +364,28 @@ body.order-interface-visible #floating-order-total { display: block; opacity: 1;
 
 @media print { 
   body { 
-    padding: 0 !important; /* Ensure no padding on body for print */
+    padding: 0 !important; 
     background-color: #ffffff !important; 
     color: #000000 !important; 
     font-size: 10pt !important; 
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
   }
 
   body.dark { /* Force light theme variables for printing when dark mode is active */
     --bg-light: #ffffff !important;
-    --text-light: #000000 !important;
+    --text-light: #000000 !important; 
     --surface-bg-light: #ffffff !important;
     --row-base: #ffffff !important;
-    --row-alt: #f0f0f0 !important; /* Light zebra stripe for print */
-    --row-hover-bg-light: #ffffff !important; /* No hover in print */
-    --color-light-gray: #dddddd !important; /* Lighter gray for borders in print */
+    --row-alt: #f0f0f0 !important; 
+    --row-hover-bg-light: #ffffff !important; 
+    --color-light-gray: #dddddd !important; 
     --category-header-bg-light: #f0f0f0 !important;
     --input-bg: #ffffff !important;
     --input-text: #000000 !important;
     --input-border: #cccccc !important;
-    --tag-text: #000000 !important; /* Ensure tags have dark text */
+    --tag-text: #000000 !important; 
     
-    /* Override specific dark theme variables to light theme equivalents for print */
     --bg-dark: #ffffff !important;
-    --text-dark: #000000 !important;
+    --text-dark: #000000 !important; 
     --surface-bg-dark: #ffffff !important;
     --row-base-dark: #ffffff !important;
     --row-alt-dark: #f0f0f0 !important;
@@ -403,36 +400,61 @@ body.order-interface-visible #floating-order-total { display: block; opacity: 1;
     --floating-total-border-dark: #dddddd !important;
   }
 
-  /* General element reset for print, if not covered by variable overrides */
-  * {
-    background-color: transparent !important; /* Try to make all backgrounds transparent unless specified */
-    color: #000000 !important; /* Force all text to black */
+  body.dark * {
+    color: #000000 !important; 
     box-shadow: none !important;
     text-shadow: none !important;
   }
-  
-  #floating-order-total, .page-header, footer, .filter-controls, 
-  .order-simulation-area button#btn-simulate-order, 
-  .header-buttons button#btn-theme, 
-  #btn-export.hide-on-print, #btn-export.hide-on-print-temp 
-   { display: none !important; }
+   body.dark *:not(.brand-banner):not(.brand-banner *):not(.tag) { 
+    background-color: transparent !important;
+  }
+  body.dark .table-brand, body.dark .order-summary-table, 
+  body.dark .table-brand tbody tr, 
+  body.dark .order-summary-table tbody tr {
+      background-color: #ffffff !important;
+  }
+   body.dark .table-brand tbody tr.product-data-row:nth-child(even),
+   body.dark .order-summary-table tr.product-data-row:nth-child(even) {
+      background-color: #f0f0f0 !important;
+  }
 
-  .table-container-scrollable { overflow-x: visible !important; border: 1px solid #dee2e6 !important; } /* Add border for print */
+  #floating-order-total, 
+  .page-header .header-buttons, 
+  footer, 
+  .filter-controls, 
+  .order-simulation-area button#btn-simulate-order, 
+  #btn-export.hide-on-print, 
+  #btn-export.hide-on-print-temp 
+   { display: none !important; }
+  
+  .page-banner { 
+    display: block !important;
+    text-align: center !important; 
+    padding: 10px 0 !important;
+    background-color: #ffffff !important; 
+  }
+  .page-banner img {
+    max-width: 100% !important;
+    height: auto !important;
+    filter: none !important; 
+  }
+
+  .table-container-scrollable { overflow-x: visible !important; border: 1px solid #dee2e6 !important; } 
   .table-brand { 
     page-break-inside: avoid !important; 
-    border: none !important; /* Remove table border, container has it */
+    border: none !important; 
     font-size: 9pt !important; 
     min-width: auto !important; 
     table-layout: auto !important; 
-    background-color: #ffffff !important; /* Ensure table itself has white bg */
+    background-color: #ffffff !important; 
   }
   .table-brand th, .table-brand td { 
     border: none !important; 
     border-bottom: 1px solid #dee2e6 !important; 
     padding: 5px !important; 
     word-wrap: break-word !important; 
-    color: #000000 !important;
-    background-color: #ffffff !important;
+    color: #000000 !important; 
+    background-color: #ffffff !important; 
   }
   .table-brand thead th { 
     background-color: #f8f9fa !important; 
@@ -446,7 +468,7 @@ body.order-interface-visible #floating-order-total { display: block; opacity: 1;
   .quantity-btn { display: none !important; }
   .quantity-display { border: none !important; background: transparent !important; text-align: right !important; width: auto !important; padding: 0 !important; font-weight: normal !important; color: #000000 !important;}
   .category-header { background-color: #f8f9fa !important; border-bottom-width: 1px !important; color: #000000 !important;}
-  .category-header > th { color: #000000 !important; } /* Ensure category header text is black */
+  .category-header > th { color: #000000 !important; } 
 
   .order-summary { margin-top: 0 !important; padding-top: 0 !important; border-top: none !important; box-shadow: none !important; color: #000000 !important; background-color: #ffffff !important;}
   .order-summary-table-container { overflow-x: visible !important; }
@@ -456,10 +478,22 @@ body.order-interface-visible #floating-order-total { display: block; opacity: 1;
   .order-summary-table tr.product-data-row:nth-child(odd) { background-color: #fff !important; }
   .order-summary-table tr.product-data-row:nth-child(even) { background-color: #f8f9fa !important; }
   
-  .brand-banner { background-color: #cccccc !important; /* Neutral banner for print */ color: #000000 !important; }
-  .brand-banner img { filter: grayscale(100%); /* Optional: make logos grayscale for print */ }
+  .brand-banner { 
+    -webkit-print-color-adjust: exact !important; 
+    print-color-adjust: exact !important; 
+    color: #ffffff !important; 
+  }
+  .brand-banner img { 
+    filter: none !important; 
+  }
 
-  .tag { color: #000000 !important; background-color: #eeeeee !important; border: 1px solid #dddddd !important;} /* Neutral tags for print */
+  .tag { 
+    color: #000000 !important; 
+    background-color: #eeeeee !important; 
+    border: 1px solid #dddddd !important;
+    -webkit-print-color-adjust: exact !important; 
+    print-color-adjust: exact !important; 
+  }
   
   body, .page-banner, .table-brand .brand-banner, .table-brand thead th, .table-brand tr, .tag, .category-header { 
     -webkit-print-color-adjust: exact !important; 
@@ -467,14 +501,112 @@ body.order-interface-visible #floating-order-total { display: block; opacity: 1;
   }
 }
 
-body.pdf-export-active .page-header, body.pdf-export-active footer, body.pdf-export-active .filter-controls, body.pdf-export-active .order-simulation-area button#btn-simulate-order, body.pdf-export-active #tabela-container, body.pdf-export-active .header-buttons, body.pdf-export-active .table-container-scrollable, body.pdf-export-active #floating-order-total { display: none !important; }
-body.pdf-export-active #order-simulation-summary { display: block !important; margin: 0; padding: 10px; box-shadow: none; border: none; }
-body.pdf-export-active { padding: 0; margin: 0; background-color: #fff !important; font-size: 10pt; }
-body.pdf-export-active .order-summary-table-container { overflow-x: visible; }
-body.pdf-export-active .order-summary-table { min-width: auto !important; }
-body.dark.pdf-export-active, body.dark.pdf-export-active #order-simulation-summary, body.dark.pdf-export-active .order-summary-table th, body.dark.pdf-export-active .order-summary-table td, body.dark.pdf-export-active .order-summary-table tr.product-data-row { background-color: #fff !important; color: #212529 !important; border-color: #dee2e6 !important; } 
-body.dark.pdf-export-active .order-summary-table th { background-color: #f8f9fa !important; }
-body.dark.pdf-export-active .order-summary-table tr.product-data-row:nth-child(odd) { background-color: #fff !important; }
-body.dark.pdf-export-active .order-summary-table tr.product-data-row:nth-child(even) { background-color: #f8f9fa !important; }
+body.pdf-export-active { 
+  padding: 0 !important; 
+  margin: 0 !important; 
+  background-color: #fff !important; 
+  font-size: 10pt !important; 
+  color: #212529 !important;
+}
+body.pdf-export-active #order-simulation-summary { 
+  display: block !important; 
+  margin: 20mm 10mm 20mm 10mm !important; /* Simulate A4 page margins for content block */
+  padding: 0 !important; /* Padding is within the content elements */
+  box-shadow: none !important; 
+  border: none !important; 
+  background-color: #fff !important;
+}
+body.pdf-export-active .pdf-logo-placeholder img {
+  display: block;
+  margin: 0 auto 20px auto;
+  max-height: 50px; /* As set in JS */
+}
+body.pdf-export-active .quote-title {
+  text-align: center;
+  font-size: 1.6em; /* Larger for PDF title */
+  font-weight: bold;
+  color: #111111;
+  margin-bottom: 1.5em;
+}
+body.pdf-export-active .order-summary-table-container { 
+  overflow-x: visible !important; 
+}
+body.pdf-export-active .order-summary-table { 
+  width: 100% !important;
+  min-width: auto !important; 
+  font-size: 0.9em; /* Base font for table in PDF */
+  border-collapse: collapse !important;
+}
+body.pdf-export-active .order-summary-table th,
+body.pdf-export-active .order-summary-table td {
+  border: 1px solid #cccccc !important; /* Slightly lighter border for PDF table */
+  padding: 8px 10px !important; /* Consistent padding */
+  text-align: left !important;
+  color: #333333 !important; /* Dark text for PDF table content */
+}
+body.pdf-export-active .order-summary-table th {
+  background-color: #f0f0f0 !important; /* Light gray header for PDF table */
+  font-weight: bold !important;
+  color: #111111 !important; /* Darker text for PDF table headers */
+}
+body.pdf-export-active .order-summary-table tbody tr.product-data-row:nth-child(even) {
+  background-color: #f9f9f9 !important; /* Subtle zebra striping for PDF */
+}
+body.pdf-export-active .order-summary-table tbody tr.product-data-row:nth-child(odd) {
+  background-color: #ffffff !important;
+}
+body.pdf-export-active .order-summary-table tfoot td,
+body.pdf-export-active .order-summary-table .grand-total-cell { /* Target specific cell if needed */
+  font-size: 1.1em !important;
+  font-weight: bold !important;
+  text-align: right !important;
+  color: #111111 !important;
+  background-color: #f0f0f0 !important; /* Light gray for totals row */
+}
+body.pdf-export-active .order-summary-table tfoot td:first-child {
+    text-align: right !important; /* Ensure "Total Geral:" is right aligned if it's in first cell of tfoot row */
+}
+
+body.pdf-export-active .pdf-quote-footer {
+  text-align: center;
+  font-size: 0.8em;
+  color: #666666;
+  margin-top: 25px;
+  border-top: 1px solid #dddddd;
+  padding-top: 10px;
+}
+
+/* Hide all other elements when PDF export is active */
+body.pdf-export-active > *:not(#order-simulation-summary) {
+    display: none !important;
+}
+/* Special rule for html2pdf.js when body.dark is also present, to ensure white background */
+body.dark.pdf-export-active, 
+body.dark.pdf-export-active #order-simulation-summary,
+body.dark.pdf-export-active .order-summary-table th, 
+body.dark.pdf-export-active .order-summary-table td, 
+body.dark.pdf-export-active .order-summary-table tr.product-data-row { 
+    background-color: #fff !important; 
+    color: #212529 !important; 
+    border-color: #dee2e6 !important; 
+} 
+body.dark.pdf-export-active .order-summary-table th { 
+    background-color: #f0f0f0 !important; /* Match light theme PDF header */
+}
+body.dark.pdf-export-active .order-summary-table tbody tr.product-data-row:nth-child(even) {
+    background-color: #f9f9f9 !important; /* Match light theme PDF zebra */
+}
+body.dark.pdf-export-active .order-summary-table tfoot td,
+body.dark.pdf-export-active .order-summary-table .grand-total-cell {
+    background-color: #f0f0f0 !important; /* Match light theme PDF totals row */
+    color: #111111 !important;
+}
+body.dark.pdf-export-active .quote-title,
+body.dark.pdf-export-active .pdf-quote-footer {
+    color: #111111 !important; /* Ensure titles and footers are dark text */
+}
+body.dark.pdf-export-active .pdf-quote-footer p {
+    color: #666666 !important;
+}
 
 [end of styles.css]

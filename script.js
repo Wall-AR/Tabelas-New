@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let orderInterfaceActive = false; 
   let currentSimulatedItems = []; 
 
-  const definedCategories = [ // MOVED TO TOP
+  const definedCategories = [ 
     "Cápsulas", "Extratos Líquidos (gotas)", "Chás Medicinais", "Novidades",
     "Último Lote", "Promoções", "Populares", "Óleos", "Pós", "Gomas", "Cartelas", "Blends", "Outros"
   ];
@@ -92,27 +92,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
   
-  // Function definition of assignCategory must come AFTER definedCategories is declared if it uses it.
   function assignCategory(item, forcePortuguese = false) {
-    // If a category is already assigned and valid (and not forcing), use it.
     if (item.category && !forcePortuguese && definedCategories.includes(item.category)) {
         if (item.category === "Populares") return "Populares";
     }
-    
     const descLower = item.desc.toLowerCase();
     if (item.tag === 'novo') return "Novidades";
     if (item.tag === 'ultimo-lote') return "Último Lote";
     if (item.tag === 'chá') return "Chás Medicinais";
-
     if (item.category && definedCategories.includes(item.category) && (forcePortuguese || item.category === "Populares")) {
         return item.category;
     }
-    
     if (forcePortuguese && item.category && item.category !== "Populares") { 
         const map = { "Capsules": "Cápsulas", "Liquid extracts (drops)": "Extratos Líquidos (gotas)", "Herbal teas": "Chás Medicinais", "New arrivals": "Novidades", "Last batch": "Último Lote", "Promotions": "Promoções", "Oils": "Óleos", "Powders": "Pós", "Gummies": "Gomas", "Blister packs": "Cartelas"};
         if (map[item.category]) return map[item.category];
     }
-
     if (descLower.includes('gummy') || descLower.includes('gomas')) return "Gomas";
     if (descLower.includes('blister')) return "Cartelas";
     if ((descLower.includes('caps') || descLower.includes('cap')) && !descLower.includes('softgel')) return "Cápsulas";
@@ -120,7 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (descLower.includes('óleo') || descLower.includes('oleo') || descLower.includes('softgel')) return "Óleos";
     if ((/\d+g\s|\d+kg\s|pó/.test(descLower)) && !descLower.includes('caps') && !descLower.includes('softgel') && !descLower.includes('gomas')) return "Pós";
     if (descLower.includes('blend')) return "Blends";
-    
     return "Outros";
   }
 
@@ -133,9 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   const originalTableData = JSON.parse(JSON.stringify(tableData)); 
-
-  // This was the problematic line, definedCategories used before this by assignCategory call during tableData.forEach
-  // const definedCategories = [ ... ]; // MOVED TO TOP
 
   originalTableData.forEach(brandData => {
     brandData.items.forEach(item => {
@@ -162,30 +152,22 @@ document.addEventListener('DOMContentLoaded', () => {
             if (item.category) categoriesFromData.add(item.category);
         });
     });
-
     const allDisplayCategories = [];
     definedCategories.forEach(definedCat => {
-        // Ensure "Populares" is always an option if defined, and other defined categories if they exist in data
         if (definedCat === "Populares" || categoriesFromData.has(definedCat)) { 
             allDisplayCategories.push(definedCat);
             categoriesFromData.delete(definedCat); 
         }
     });
-    categoriesFromData.forEach(cat => allDisplayCategories.push(cat)); // Add any other unique categories from data
-
-
+    categoriesFromData.forEach(cat => allDisplayCategories.push(cat)); 
     categoryFilterEl.innerHTML = ''; 
     const allOption = document.createElement('option');
     allOption.value = 'all';
     allOption.textContent = 'Todas as Categorias'; 
     categoryFilterEl.appendChild(allOption);
-
-    // Filter out duplicates that might occur if "Populares" was also in data
     const uniqueDisplayCategories = [...new Set(allDisplayCategories)];
-
     uniqueDisplayCategories.forEach(categoryText => {
         if (categoryText === "Outros" && !originalTableData.some(brand => brand.items.some(item => item.category === "Outros"))) {
-           // Skip "Outros" if no items actually belong to it
         } else {
             const option = document.createElement('option');
             option.value = categoryText;
@@ -375,7 +357,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     orderSimulationSummaryEl.innerHTML = ''; 
     if (currentSimulatedItems.length > 0) {
-      let summaryHTML = '<h3>Resumo do Pedido</h3><div class="order-summary-table-container"><table class="order-summary-table"><thead><tr><th>Produto</th><th>Preço Unit.</th><th>Qtde.</th><th>Total Item</th></tr></thead><tbody>';
+      let summaryHTML = `<div class="pdf-logo-placeholder"><img src="images/purafor-logo.png" alt="Logo da Empresa" style="max-height: 50px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;"></div>`;
+      summaryHTML += `<h2 class="quote-title" style="text-align:center;">Cotação de Pedido</h2>`;
+      summaryHTML += '<div class="order-summary-table-container"><table class="order-summary-table"><thead><tr><th>Produto</th><th>Preço Unit.</th><th>Qtde.</th><th>Total Item</th></tr></thead><tbody>';
       currentSimulatedItems.forEach(item => {
         summaryHTML += `<tr class="product-data-row">
           <td>${item.desc}</td>
@@ -384,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>R$ ${item.total.toFixed(2)}</td>
         </tr>`;
       });
-      summaryHTML += `</tbody><tfoot><tr><td colspan="3" style="text-align:right;"><strong>Total Geral:</strong></td><td><strong>R$ ${grandTotal.toFixed(2)}</strong></td></tr></tfoot></table></div>`;
+      summaryHTML += `</tbody><tfoot><tr><td colspan="3" style="text-align:right; font-weight:bold;">Total Geral:</td><td class="grand-total-cell" style="font-weight:bold;">R$ ${grandTotal.toFixed(2)}</td></tr></tfoot></table></div>`;
       orderSimulationSummaryEl.innerHTML = summaryHTML;
       if (orderInterfaceActive) { 
           btnExportEl.textContent = 'Exportar Cotação PDF';
@@ -462,10 +446,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('pdf-export-active'); 
         const element = orderSimulationSummaryEl;
         const opt = {
-          margin:       [0.5, 0.5, 0.5, 0.5], 
+          margin:       [0.75, 0.5, 0.75, 0.5], // Margins in inches [top, left, bottom, right]
           filename:     'cotacao_pedido.pdf', 
           image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  { scale: 2, useCORS: true, logging: false },
+          html2canvas:  { scale: 2, useCORS: true, logging: false, scrollY: 0 }, // Try scrollY: 0
           jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
         };
         html2pdf().from(element).set(opt).save().then(() => {
@@ -498,3 +482,5 @@ document.addEventListener('DOMContentLoaded', () => {
   btnExportEl.textContent = 'Exportar Catálogo PDF'; 
   updateFloatingTotal(0); 
 });
+
+[end of script.js]
