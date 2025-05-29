@@ -3,6 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let orderInterfaceActive = false; 
   let currentSimulatedItems = []; 
 
+  const definedCategories = [ // MOVED TO TOP
+    "Cápsulas", "Extratos Líquidos (gotas)", "Chás Medicinais", "Novidades",
+    "Último Lote", "Promoções", "Populares", "Óleos", "Pós", "Gomas", "Cartelas", "Blends", "Outros"
+  ];
+
   let tableData = [ 
     {
       brand: '',
@@ -86,6 +91,38 @@ document.addEventListener('DOMContentLoaded', () => {
       ]
     }
   ];
+  
+  // Function definition of assignCategory must come AFTER definedCategories is declared if it uses it.
+  function assignCategory(item, forcePortuguese = false) {
+    // If a category is already assigned and valid (and not forcing), use it.
+    if (item.category && !forcePortuguese && definedCategories.includes(item.category)) {
+        if (item.category === "Populares") return "Populares";
+    }
+    
+    const descLower = item.desc.toLowerCase();
+    if (item.tag === 'novo') return "Novidades";
+    if (item.tag === 'ultimo-lote') return "Último Lote";
+    if (item.tag === 'chá') return "Chás Medicinais";
+
+    if (item.category && definedCategories.includes(item.category) && (forcePortuguese || item.category === "Populares")) {
+        return item.category;
+    }
+    
+    if (forcePortuguese && item.category && item.category !== "Populares") { 
+        const map = { "Capsules": "Cápsulas", "Liquid extracts (drops)": "Extratos Líquidos (gotas)", "Herbal teas": "Chás Medicinais", "New arrivals": "Novidades", "Last batch": "Último Lote", "Promotions": "Promoções", "Oils": "Óleos", "Powders": "Pós", "Gummies": "Gomas", "Blister packs": "Cartelas"};
+        if (map[item.category]) return map[item.category];
+    }
+
+    if (descLower.includes('gummy') || descLower.includes('gomas')) return "Gomas";
+    if (descLower.includes('blister')) return "Cartelas";
+    if ((descLower.includes('caps') || descLower.includes('cap')) && !descLower.includes('softgel')) return "Cápsulas";
+    if (descLower.includes('gotas') || descLower.includes('ml')) return "Extratos Líquidos (gotas)";
+    if (descLower.includes('óleo') || descLower.includes('oleo') || descLower.includes('softgel')) return "Óleos";
+    if ((/\d+g\s|\d+kg\s|pó/.test(descLower)) && !descLower.includes('caps') && !descLower.includes('softgel') && !descLower.includes('gomas')) return "Pós";
+    if (descLower.includes('blend')) return "Blends";
+    
+    return "Outros";
+  }
 
   tableData.forEach((brand, brandIndex) => {
     brand.items.forEach((item, itemIndex) => {
@@ -97,50 +134,9 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const originalTableData = JSON.parse(JSON.stringify(tableData)); 
 
-  const definedCategories = [
-    "Cápsulas", "Extratos Líquidos (gotas)", "Chás Medicinais", "Novidades",
-    "Último Lote", "Promoções", "Populares", "Óleos", "Pós", "Gomas", "Cartelas", "Blends", "Outros"
-  ];
-  
-  function assignCategory(item, forcePortuguese = false) {
-    // If a category is already assigned and valid (and not forcing), use it.
-    if (item.category && !forcePortuguese && definedCategories.includes(item.category)) {
-        // Specific check for "Populares" to ensure it's not overridden by keyword logic below
-        // if it was pre-assigned from tableData.
-        if (item.category === "Populares") return "Populares";
-    }
-    
-    const descLower = item.desc.toLowerCase();
-    if (item.tag === 'novo') return "Novidades";
-    if (item.tag === 'ultimo-lote') return "Último Lote";
-    if (item.tag === 'chá') return "Chás Medicinais";
+  // This was the problematic line, definedCategories used before this by assignCategory call during tableData.forEach
+  // const definedCategories = [ ... ]; // MOVED TO TOP
 
-    // Use pre-assigned category if it's valid and we are in the initial data setup (forcePortuguese=true)
-    // OR if it's "Populares" (to preserve manual assignment)
-    if (item.category && definedCategories.includes(item.category) && (forcePortuguese || item.category === "Populares")) {
-        return item.category;
-    }
-    
-    // Fallback for pre-assigned English categories during initial forcePortuguese pass
-    // or if category was English and needs re-mapping, and not "Populares"
-    if (forcePortuguese && item.category && item.category !== "Populares") { 
-        const map = { "Capsules": "Cápsulas", "Liquid extracts (drops)": "Extratos Líquidos (gotas)", "Herbal teas": "Chás Medicinais", "New arrivals": "Novidades", "Last batch": "Último Lote", "Promotions": "Promoções", "Oils": "Óleos", "Powders": "Pós", "Gummies": "Gomas", "Blister packs": "Cartelas"};
-        if (map[item.category]) return map[item.category];
-    }
-
-    // Keyword-based assignment if not "Populares" or other specific pre-assignment
-    if (descLower.includes('gummy') || descLower.includes('gomas')) return "Gomas";
-    if (descLower.includes('blister')) return "Cartelas";
-    if ((descLower.includes('caps') || descLower.includes('cap')) && !descLower.includes('softgel')) return "Cápsulas";
-    if (descLower.includes('gotas') || descLower.includes('ml')) return "Extratos Líquidos (gotas)";
-    if (descLower.includes('óleo') || descLower.includes('oleo') || descLower.includes('softgel')) return "Óleos";
-    if ((/\d+g\s|\d+kg\s|pó/.test(descLower)) && !descLower.includes('caps') && !descLower.includes('softgel') && !descLower.includes('gomas')) return "Pós";
-    if (descLower.includes('blend')) return "Blends";
-    
-    return "Outros";
-  }
-  
-  // Re-process originalTableData to ensure all categories are correctly mapped after definedCategories update
   originalTableData.forEach(brandData => {
     brandData.items.forEach(item => {
       item.category = assignCategory(item); 
@@ -167,16 +163,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Combine definedCategories with categories found in data, ensuring defined order and uniqueness
     const allDisplayCategories = [];
     definedCategories.forEach(definedCat => {
-        if (categoriesFromData.has(definedCat) || definedCat === "Populares") { // Always include "Populares" if defined
+        // Ensure "Populares" is always an option if defined, and other defined categories if they exist in data
+        if (definedCat === "Populares" || categoriesFromData.has(definedCat)) { 
             allDisplayCategories.push(definedCat);
-            categoriesFromData.delete(definedCat); // Remove to avoid duplication
+            categoriesFromData.delete(definedCat); 
         }
     });
-    // Add any remaining categories from data that weren't in definedCategories (e.g., "Outros" if not explicitly first/last)
-    categoriesFromData.forEach(cat => allDisplayCategories.push(cat));
+    categoriesFromData.forEach(cat => allDisplayCategories.push(cat)); // Add any other unique categories from data
 
 
     categoryFilterEl.innerHTML = ''; 
@@ -185,10 +180,12 @@ document.addEventListener('DOMContentLoaded', () => {
     allOption.textContent = 'Todas as Categorias'; 
     categoryFilterEl.appendChild(allOption);
 
-    allDisplayCategories.forEach(categoryText => {
+    // Filter out duplicates that might occur if "Populares" was also in data
+    const uniqueDisplayCategories = [...new Set(allDisplayCategories)];
+
+    uniqueDisplayCategories.forEach(categoryText => {
         if (categoryText === "Outros" && !originalTableData.some(brand => brand.items.some(item => item.category === "Outros"))) {
-            // Do not add "Outros" if no items actually belong to it and it's not "Populares" (which we always want)
-            // This check might be redundant if allDisplayCategories is built correctly from data.
+           // Skip "Outros" if no items actually belong to it
         } else {
             const option = document.createElement('option');
             option.value = categoryText;
