@@ -14,10 +14,62 @@
       <img src="images/banner.png" alt="Catálogo de Suplementos">
     </div>
     <div class="header-buttons">
-      <button id="btn-export">Exportar PDF</button>
+      <button id="btn-export">Exportar Catálogo PDF</button> <!-- Initial text -->
       <button id="btn-theme">Tema Escuro</button>
     </div>
   </header>
+
+  <div class="filter-controls">
+    <div class="filter-group">
+      <label for="category-filter">Categoria:</label>
+      <select id="category-filter">
+        <option value="all">Todas as Categorias</option>
+        <!-- Options will be populated by JavaScript -->
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="stock-status-filter">Status de Estoque:</label>
+      <select id="stock-status-filter">
+        <option value="all">Todos</option>
+        <option value="new">New arrivals</option>
+        <option value="last">Last batch</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="min-price">Preço Mín:</label>
+      <input type="number" id="min-price" placeholder="Ex: 10.00" step="0.01">
+      <label for="max-price">Preço Máx:</label>
+      <input type="number" id="max-price" placeholder="Ex: 50.00" step="0.01">
+    </div>
+
+    <div class="filter-group">
+      <label for="promotions-filter">Promoções:</label>
+      <input type="checkbox" id="promotions-filter">
+      <label for="promotions-filter" class="checkbox-label">Mostrar apenas itens promocionais</label>
+    </div>
+    
+    <div class="filter-group">
+      <label for="popularity-filter">Popularidade:</label>
+      <select id="popularity-filter" disabled>
+        <option value="">Em breve</option>
+      </select>
+    </div>
+
+    <div class="filter-buttons">
+      <button id="btn-apply-filters">Aplicar Filtros</button>
+      <button id="btn-reset-filters">Limpar Filtros</button>
+    </div>
+  </div>
+
+  <div class="order-simulation-area">
+    <button id="btn-simulate-order">Simular Pedido</button>
+    <div id="order-simulation-summary" class="order-summary">
+      <!-- Simulation results will be displayed here -->
+    </div>
+  </div>
+
   <main id="tabela-container"></main>
   <footer>
     <p>Parceiros fortes, negócios fortes — juntos impulsionamos sua performance B2B!</p>
