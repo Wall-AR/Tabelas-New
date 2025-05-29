@@ -94,26 +94,26 @@ document.addEventListener('DOMContentLoaded', () => {
   
   function assignCategory(item, forcePortuguese = false) {
     if (item.category && !forcePortuguese && definedCategories.includes(item.category)) {
-        if (item.category === "Populares") return "Populares";
+        if (item.category === "Populares") { return "Populares"; }
     }
     const descLower = item.desc.toLowerCase();
-    if (item.tag === 'novo') return "Novidades";
-    if (item.tag === 'ultimo-lote') return "Último Lote";
-    if (item.tag === 'chá') return "Chás Medicinais";
+    if (item.tag === 'novo') { return "Novidades"; }
+    if (item.tag === 'ultimo-lote') { return "Último Lote"; }
+    if (item.tag === 'chá') { return "Chás Medicinais"; }
     if (item.category && definedCategories.includes(item.category) && (forcePortuguese || item.category === "Populares")) {
         return item.category;
     }
     if (forcePortuguese && item.category && item.category !== "Populares") { 
         const map = { "Capsules": "Cápsulas", "Liquid extracts (drops)": "Extratos Líquidos (gotas)", "Herbal teas": "Chás Medicinais", "New arrivals": "Novidades", "Last batch": "Último Lote", "Promotions": "Promoções", "Oils": "Óleos", "Powders": "Pós", "Gummies": "Gomas", "Blister packs": "Cartelas"};
-        if (map[item.category]) return map[item.category];
+        if (map[item.category]) { return map[item.category]; }
     }
-    if (descLower.includes('gummy') || descLower.includes('gomas')) return "Gomas";
-    if (descLower.includes('blister')) return "Cartelas";
-    if ((descLower.includes('caps') || descLower.includes('cap')) && !descLower.includes('softgel')) return "Cápsulas";
-    if (descLower.includes('gotas') || descLower.includes('ml')) return "Extratos Líquidos (gotas)";
-    if (descLower.includes('óleo') || descLower.includes('oleo') || descLower.includes('softgel')) return "Óleos";
-    if ((/\d+g\s|\d+kg\s|pó/.test(descLower)) && !descLower.includes('caps') && !descLower.includes('softgel') && !descLower.includes('gomas')) return "Pós";
-    if (descLower.includes('blend')) return "Blends";
+    if (descLower.includes('gummy') || descLower.includes('gomas')) { return "Gomas"; }
+    if (descLower.includes('blister')) { return "Cartelas"; }
+    if ((descLower.includes('caps') || descLower.includes('cap')) && !descLower.includes('softgel')) { return "Cápsulas"; }
+    if (descLower.includes('gotas') || descLower.includes('ml')) { return "Extratos Líquidos (gotas)"; }
+    if (descLower.includes('óleo') || descLower.includes('oleo') || descLower.includes('softgel')) { return "Óleos"; }
+    if ((/\d+g\s|\d+kg\s|pó/.test(descLower)) && !descLower.includes('caps') && !descLower.includes('softgel') && !descLower.includes('gomas')) { return "Pós"; }
+    if (descLower.includes('blend')) { return "Blends"; }
     return "Outros";
   }
 
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoriesFromData = new Set();
     originalTableData.forEach(brand => {
         brand.items.forEach(item => {
-            if (item.category) categoriesFromData.add(item.category);
+            if (item.category) { categoriesFromData.add(item.category); }
         });
     });
     const allDisplayCategories = [];
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.toggle('order-interface-visible', orderInterfaceActive);
     tabelaContainer.innerHTML = ''; 
     dataToRender.forEach((brandData) => { 
-      if (brandData.items.length === 0) return; 
+      if (brandData.items.length === 0) { return; }
       const tableScrollContainer = document.createElement('div'); 
       tableScrollContainer.className = 'table-container-scrollable';
       const tbl = document.createElement('table');
@@ -309,10 +309,10 @@ document.addEventListener('DOMContentLoaded', () => {
   tabelaContainer.addEventListener('click', function(event) {
     const target = event.target;
     const productId = target.dataset.productId;
-    if (!productId || !target.classList.contains('quantity-btn')) return; 
+    if (!productId || !target.classList.contains('quantity-btn')) { return; }
 
     const product = findProductById(productId);
-    if (!product) return;
+    if (!product) { return; }
 
     let quantityChanged = false;
     if (target.classList.contains('quantity-increase')) {
@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (quantityChanged) {
       const displaySpans = document.querySelectorAll(`.quantity-display[data-product-id="${productId}"]`);
-      displaySpans.forEach(span => span.textContent = product.quantity);
+      displaySpans.forEach(span => { span.textContent = product.quantity; });
       if(orderInterfaceActive) {
         const currentGrandTotal = calculateCurrentGrandTotal();
         updateFloatingTotal(currentGrandTotal);
@@ -369,6 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </tr>`;
       });
       summaryHTML += `</tbody><tfoot><tr><td colspan="3" style="text-align:right; font-weight:bold;">Total Geral:</td><td class="grand-total-cell" style="font-weight:bold;">R$ ${grandTotal.toFixed(2)}</td></tr></tfoot></table></div>`;
+      summaryHTML += `<div class="pdf-quote-footer"><p>Endereço da Empresa | Telefone | email@example.com</p><p>&copy; ${new Date().getFullYear()} Nome da Empresa. Todos os direitos reservados.</p></div>`;
       orderSimulationSummaryEl.innerHTML = summaryHTML;
       if (orderInterfaceActive) { 
           btnExportEl.textContent = 'Exportar Cotação PDF';
@@ -397,13 +398,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let filteredData = JSON.parse(JSON.stringify(originalTableData)); 
     filteredData = filteredData.map(brand => {
       let items = brand.items.filter(item => {
-        if (selectedCategory !== 'all' && item.category !== selectedCategory) return false;
+        if (selectedCategory !== 'all' && item.category !== selectedCategory) { return false; }
         if (selectedStockStatus !== 'all') {
-          if (selectedStockStatus === 'new' && item.category !== 'Novidades') return false; 
-          if (selectedStockStatus === 'last' && item.category !== 'Último Lote') return false; 
+          if (selectedStockStatus === 'new' && item.category !== 'Novidades') { return false; }
+          if (selectedStockStatus === 'last' && item.category !== 'Último Lote') { return false; }
         }
-        if (item.unit < minPrice || item.unit > maxPrice) return false;
-        if (showPromotions && item.category !== 'Promoções') return false; 
+        if (item.unit < minPrice || item.unit > maxPrice) { return false; }
+        if (showPromotions && item.category !== 'Promoções') { return false; }
         return true;
       });
       return { ...brand, items: items };
@@ -446,11 +447,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('pdf-export-active'); 
         const element = orderSimulationSummaryEl;
         const opt = {
-          margin:       [0.75, 0.5, 0.75, 0.5], // Margins in inches [top, left, bottom, right]
+          margin:       [15, 10, 15, 10], 
           filename:     'cotacao_pedido.pdf', 
           image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  { scale: 2, useCORS: true, logging: false, scrollY: 0 }, // Try scrollY: 0
-          jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+          html2canvas:  { scale: 2, useCORS: true, logging: false, scrollY: 0 }, 
+          jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
         html2pdf().from(element).set(opt).save().then(() => {
             document.body.classList.remove('pdf-export-active'); 
@@ -461,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else { 
         btnExportEl.classList.add('hide-on-print-temp'); 
         window.print(); 
-        setTimeout(() => btnExportEl.classList.remove('hide-on-print-temp'), 1000); 
+        setTimeout(() => { btnExportEl.classList.remove('hide-on-print-temp'); }, 1000); 
     }
   });
 
@@ -472,7 +473,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   originalTableData.forEach(brand => { 
     brand.items.forEach(item => {
-      if (item.quantity === undefined) item.quantity = 0;
+      if (item.quantity === undefined) { item.quantity = 0; }
     });
   });
 
@@ -482,5 +483,3 @@ document.addEventListener('DOMContentLoaded', () => {
   btnExportEl.textContent = 'Exportar Catálogo PDF'; 
   updateFloatingTotal(0); 
 });
-
-[end of script.js]
