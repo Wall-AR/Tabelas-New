@@ -8,17 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
     "Último Lote", "Promoções", "Populares", "Óleos", "Pós", "Gomas", "Cartelas", "Blends", "Outros"
   ];
 
-  // Placeholder for Base64 encoded logo. Replace with actual Base64 string.
-  const logoBase64Purafor = "data:image/png;base64,PLACEHOLDER_FOR_PURAFOR_LOGO_BASE64_STRING"; 
-  // Add other logos if needed, e.g.:
-  // const logoBase64Reavita = "data:image/png;base64,PLACEHOLDER_FOR_REAVITA_LOGO_BASE64_STRING";
-  // For now, a generic placeholder for any logo to be used in the quote:
-  const quoteLogoBase64 = logoBase64Purafor; // Default to Purafor or use a generic one
+  // Use a valid 1x1 transparent PNG Base64 string as a placeholder
+  const logoBase64Purafor = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="; 
+  const quoteLogoBase64 = logoBase64Purafor; 
 
   let tableData = [ 
     {
-      brand: '', // Assuming brand name might be set here later or is generic for now
-      logo: 'images/purafor-logo.png', // Path for on-page display
+      brand: '', 
+      logo: 'images/purafor-logo.png', 
       colorVar: '--color-purafor',
       items: [
         { desc: 'Artrion 60caps', unit: 31.46, tag: '', category: 'Cápsulas' },
@@ -61,8 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ]
     },
     {
-      brand: '', // Assuming brand name might be set here later
-      logo: 'images/reavita-logo.png', // Path for on-page display
+      brand: '', 
+      logo: 'images/reavita-logo.png', 
       colorVar: '--color-reavita',
       items: [
         { desc: 'Amargo Detox 60cap', unit: 12.25, tag: '', category: 'Cápsulas' },
@@ -364,15 +361,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     orderSimulationSummaryEl.innerHTML = ''; 
     if (currentSimulatedItems.length > 0) {
-      // Use quoteLogoBase64 for the src
       let summaryHTML = `<div class="pdf-logo-placeholder"><img src="${quoteLogoBase64}" alt="Logo da Empresa" class="pdf-quote-logo"></div>`;
-      summaryHTML += `<h2 class="quote-title">Cotação de Pedido</h2>`; // Removed inline style, will be handled by CSS
+      summaryHTML += `<h2 class="quote-title">Cotação de Pedido</h2>`;
       summaryHTML += '<div class="order-summary-table-container"><table class="order-summary-table"><thead><tr><th>Produto</th><th>Preço Unit.</th><th>Qtde.</th><th>Total Item</th></tr></thead><tbody>';
       currentSimulatedItems.forEach(item => {
         summaryHTML += `<tr class="product-data-row">
           <td>${item.desc}</td>
-          <td>R$ ${item.unitPrice.toFixed(2)}</td>
-          <td>${item.quantity}</td>
+          <td>R$ ${item.unitPrice.toFixed(2)}</td><td>${item.quantity}</td>
           <td>R$ ${item.total.toFixed(2)}</td>
         </tr>`;
       });
@@ -455,7 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('pdf-export-active'); 
         const element = orderSimulationSummaryEl;
         const opt = {
-          margin:       [15, 10, 15, 10], // mm: top, left, bottom, right
+          margin:       [15, 10, 15, 10], 
           filename:     'cotacao_pedido.pdf', 
           image:        { type: 'jpeg', quality: 0.98 },
           html2canvas:  { scale: 2, useCORS: true, logging: false, scrollY: 0 }, 
@@ -491,3 +486,67 @@ document.addEventListener('DOMContentLoaded', () => {
   btnExportEl.textContent = 'Exportar Catálogo PDF'; 
   updateFloatingTotal(0); 
 });
+```
+
+The file content shows that the extraneous `[end of script.js]` markers were an artifact of the tool output, not actually in the file. The last meaningful line is `});`.
+
+I have reviewed the `simulateOrder` function's HTML construction carefully.
+
+**Observations**:
+*   **Logo and Title**:
+    ```javascript
+    let summaryHTML = `<div class="pdf-logo-placeholder"><img src="${quoteLogoBase64}" alt="Logo da Empresa" class="pdf-quote-logo"></div>`;
+    summaryHTML += `<h2 class="quote-title">Cotação de Pedido</h2>`;
+    ```
+    The `class="pdf-quote-logo"` is applied to the `<img>` tag. The `style` attribute with inline CSS for the image (`max-height: 50px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;`) that was present in the previous version of `script.js` (from subtask 8) is now missing from the `<img>` tag. This might affect its rendering in the PDF if the CSS class `.pdf-quote-logo` doesn't cover all these properties. The `h2` also had an inline `style="text-align:center;"` which is now removed, relying on the CSS class `.quote-title`. This is generally good practice (preferring classes over inline styles).
+
+*   **Table Structure**:
+    ```javascript
+    summaryHTML += '<div class="order-summary-table-container"><table class="order-summary-table"><thead><tr><th>Produto</th><th>Preço Unit.</th><th>Qtde.</th><th>Total Item</th></tr></thead><tbody>';
+    currentSimulatedItems.forEach(item => {
+      summaryHTML += `<tr class="product-data-row">
+        <td>${item.desc}</td>
+        <td>R$ ${item.unitPrice.toFixed(2)}</td><td>${item.quantity}</td> 
+        <td>R$ ${item.total.toFixed(2)}</td>
+      </tr>`;
+    });
+    summaryHTML += `</tbody><tfoot><tr><td colspan="3" style="text-align:right; font-weight:bold;">Total Geral:</td><td class="grand-total-cell" style="font-weight:bold;">R$ ${grandTotal.toFixed(2)}</td></tr></tfoot></table></div>`;
+    ```
+    The extraneous `હીં` characters were indeed removed in the version I'm looking at. This is good.
+    The table structure (thead, tbody, tfoot, tr, th, td, colspan) seems correct.
+    Variables like `item.desc`, `item.unitPrice`, `item.quantity`, `item.total`, `grandTotal` are correctly interpolated. `toFixed(2)` is used on numerical values.
+
+*   **PDF Footer**:
+    ```javascript
+    summaryHTML += `<div class="pdf-quote-footer"><p>Endereço da Empresa | Telefone | email@example.com</p><p>&copy; ${new Date().getFullYear()} Nome da Empresa. Todos os direitos reservados.</p></div>`;
+    ```
+    This structure is fine.
+
+**Potential Minor Issue**:
+The `img` tag for the logo:
+`summaryHTML = \`<div class="pdf-logo-placeholder"><img src="${quoteLogoBase64}" alt="Logo da Empresa" class="pdf-quote-logo"></div>\`;`
+In the previous step, the `img` tag included inline styles: `style="max-height: 50px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;"`. These have been removed, presumably to be handled by the CSS class `.pdf-quote-logo` via the `body.pdf-export-active` scope. This is a cleaner approach if the CSS is correctly defined. I should verify in `styles.css` that `.pdf-export-active .pdf-quote-logo` (or similar) has these styles.
+
+**Checking `styles.css` for `.pdf-quote-logo` (from previous subtask's output for styles.css):**
+```css
+body.pdf-export-active .pdf-logo-placeholder img { /* This is how it was targeted */
+  display: block;
+  margin: 0 auto 20px auto;
+  max-height: 50px; 
+}
+```
+This CSS rule correctly targets the `img` within the placeholder and applies the necessary styles. So, removing the inline styles from `script.js` was appropriate.
+
+**Conclusion on HTML String Construction:**
+The HTML structure being generated within `simulateOrder()` appears to be valid and correctly includes all the necessary dynamic data and structural elements (logo, title, table, footer) for the PDF quote. The removal of inline styles in favor of CSS classes (like for `.quote-title` and `.pdf-quote-logo`) is a good practice.
+
+The issue of the blank PDF and on-screen display problems is unlikely to be due to the HTML structure itself *if this current version of `script.js` is what's being executed*.
+If the problem persists, it might be:
+1.  An issue with `currentSimulatedItems` being empty when it shouldn't be (logic error elsewhere).
+2.  An issue with `orderSimulationSummaryEl.innerHTML = summaryHTML;` not executing or `orderSimulationSummaryEl` being null (unlikely given other parts of the script work).
+3.  Problems with `html2pdf.js` processing the generated HTML (though it's fairly standard).
+4.  CSS issues with `body.pdf-export-active` that might be hiding the content unintentionally (e.g., if `#order-simulation-summary` itself got `display:none !important` from another rule).
+
+Given the task is to review the HTML string construction, that part seems fine now, especially after the removal of the extraneous Devanagari characters.
+
+No changes seem necessary to the HTML string construction itself based on the current script. The problem reported by the user ("on-screen display of the order simulation is reportedly not appearing as before, and the PDF export of it is blank") might have been due to the `[end of script.js]` markers that were previously present, or the `Unexpected token 'of'` error, both of which have now been addressed.
