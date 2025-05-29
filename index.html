@@ -14,8 +14,8 @@
       <img src="images/banner.png" alt="Catálogo de Suplementos">
     </div>
     <div class="header-buttons">
-      <button id="btn-export">Exportar Catálogo PDF</button> <!-- Initial text -->
-      <button id="btn-theme">Tema Escuro</button>
+      <button id="btn-export">Exportar Catálogo PDF</button> <!-- Initial text, will be updated by JS -->
+      <button id="btn-theme">Tema Escuro</button> <!-- Initial text, will be updated by JS -->
     </div>
   </header>
 
@@ -32,8 +32,8 @@
       <label for="stock-status-filter">Status de Estoque:</label>
       <select id="stock-status-filter">
         <option value="all">Todos</option>
-        <option value="new">New arrivals</option>
-        <option value="last">Last batch</option>
+        <option value="new">Novidades</option> <!-- Translated -->
+        <option value="last">Último Lote</option> <!-- Translated -->
       </select>
     </div>
 
@@ -71,6 +71,9 @@
   </div>
 
   <main id="tabela-container"></main>
+
+  <div id="floating-order-total">Total do Pedido: R$ 0,00</div>
+
   <footer>
     <p>Parceiros fortes, negócios fortes — juntos impulsionamos sua performance B2B!</p>
   </footer>

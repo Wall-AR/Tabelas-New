@@ -1,60 +1,135 @@
 /* styles.css */
 :root {
+  --font-family-base: "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  
   --color-reavita: #548235;
   --color-purafor: #00CC99;
-  --row-alt: #f0f0f0; 
+
+  --color-primary: #0062cc; /* Adjusted primary blue */
+  --color-secondary: #5a6268; /* Adjusted secondary gray */
+  --color-success: #218838; /* Adjusted success green */
+  --color-light-gray: #e9ecef; /* For borders, some backgrounds */
+  --color-dark-gray: #343a40; /* For dark theme elements */
+
+  --row-alt: #f8f9fa; 
   --row-base: #ffffff;
-  --bg-light: #fafafa;
-  --text-light: #333;
-  --bg-dark: #121212; 
+  --bg-light: #ffffff; /* Cleaner light background */
+  --text-light: #212529; /* Darker text for better contrast */
+  
+  --bg-dark: #1c1c1c; 
   --text-dark: #f0f0f0; 
+  --row-alt-dark: #2a2a2a;
+  --row-base-dark: #222222;
+
   --tag-cha: #a5d6a7;
   --tag-text: #000;
   --banner-bg: #00CC99; 
+
   --input-bg-light: #fff;
-  --input-text-light: #333;
-  --input-border-light: #ccc;
-  --input-bg-dark: #333;
-  --input-text-dark: #eee;
-  --input-border-dark: #555;
-  --button-primary-bg: #007bff;
-  --button-primary-text: #fff;
-  --button-secondary-bg: #6c757d;
-  --button-secondary-text: #fff;
+  --input-text-light: #495057;
+  --input-border-light: #ced4da;
+  --input-focus-border-light: #80bdff;
+  --input-focus-shadow-light: rgba(0, 123, 255, 0.25);
+
+  --input-bg-dark: #333a40;
+  --input-text-dark: #f8f9fa;
+  --input-border-dark: #6c757d;
+  --input-focus-border-dark: #589bf8;
+  --input-focus-shadow-dark: rgba(0, 100, 250, 0.25);
+
+  --button-padding-y: .55rem;
+  --button-padding-x: 1rem;
+  --button-font-size: 0.9rem;
+  --button-font-weight: 500;
+  --button-line-height: 1.5;
+  --button-border-radius: .3rem;
+  --button-box-shadow: 0 2px 4px rgba(0,0,0,0.07);
+  --button-hover-brightness: 0.9;
+  --button-active-brightness: 0.8;
+  --button-focus-shadow-size: .2rem;
+
+  --category-header-bg-light: #e9ecef; 
+  --category-header-bg-dark: #343a40;
+
+  --floating-total-bg-light: #ffffff;
+  --floating-total-text-light: #212529;
+  --floating-total-border-light: #dee2e6;
+  --floating-total-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  --floating-total-bg-dark: #2c2e33;
+  --floating-total-text-dark: #f0f0f0;
+  --floating-total-border-dark: #45494f;
 }
 
 body {
-  padding: 10px; /* Reduced padding for mobile first */
+  padding: 10px; 
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   background: var(--bg-light);
   color: var(--text-light);
-  transition: background 0.3s, color 0.3s;
-  font-size: 14px; /* Base font size for mobile */
+  transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+  font-family: var(--font-family-base);
+  font-size: 15px; /* Slightly increased base font size */
+  padding-bottom: 80px; 
 }
 
 body.dark {
   background: var(--bg-dark);
   color: var(--text-dark);
-  --row-alt: #2c2c2c;
-  --row-base: #1e1e1e;
+  --row-alt: var(--row-alt-dark);
+  --row-base: var(--row-base-dark);
+  --category-header-bg-light: var(--category-header-bg-dark); 
+  --input-bg-light: var(--input-bg-dark);
+  --input-text-light: var(--input-text-dark);
+  --input-border-light: var(--input-border-dark);
+  --input-focus-border-light: var(--input-focus-border-dark);
+  --input-focus-shadow-light: var(--input-focus-shadow-dark);
+  --floating-total-bg-light: var(--floating-total-bg-dark);
+  --floating-total-text-light: var(--floating-total-text-dark);
+  --floating-total-border-light: var(--floating-total-border-dark);
 }
 
 * {
   box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
 }
+
+/* General Button Styling */
+button, .button { /* Added .button class for elements that should look like buttons */
+  padding: var(--button-padding-y) var(--button-padding-x);
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  line-height: var(--button-line-height);
+  border-radius: var(--button-border-radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, filter 0.15s ease-in-out;
+  box-shadow: var(--button-box-shadow);
+}
+button:hover, .button:hover {
+  filter: brightness(var(--button-hover-brightness));
+}
+button:active, .button:active {
+  filter: brightness(var(--button-active-brightness));
+  transform: translateY(1px);
+}
+button:focus-visible, .button:focus-visible { /* More modern focus state */
+  outline: none;
+  box-shadow: 0 0 0 var(--button-focus-shadow-size) var(--input-focus-shadow-light);
+}
+body.dark button:focus-visible, body.dark .button:focus-visible {
+  box-shadow: 0 0 0 var(--button-focus-shadow-size) var(--input-focus-shadow-dark);
+}
+
 
 .page-header {
   padding: 0;
-  margin-bottom: 15px; /* Reduced margin */
+  margin-bottom: 20px; 
 }
 
 .page-banner {
   background-color: var(--banner-bg); 
   text-align: center;
-  padding: 15px 0; /* Reduced padding */
+  padding: 20px 0; 
 }
 
 .page-banner img {
@@ -64,516 +139,242 @@ body.dark {
 
 .header-buttons {
   display: flex;
-  flex-wrap: wrap; /* Allow buttons to wrap */
-  gap: 8px; /* Reduced gap */
+  flex-wrap: wrap; 
+  gap: 10px; 
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
-.header-buttons button {
-  padding: 8px 15px; /* Reduced padding */
-  border: none;
-  background: var(--button-secondary-bg);
-  color: var(--button-secondary-text);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  flex-grow: 1; /* Allow buttons to grow and share space */
-  min-width: 120px; /* Minimum width for buttons */
+.header-buttons button { /* Specific overrides if needed, else inherits general button */
+  background-color: var(--color-secondary);
+  color: #fff;
+  min-width: 130px; 
 }
 body.dark .header-buttons button {
-    background: #555;
-    color: #fff;
+    background: var(--color-dark-gray);
 }
 
-.header-buttons button:hover {
-  opacity: 0.9;
-}
 
-/* Filter Controls Styling */
 .filter-controls {
   display: flex;
-  flex-direction: column; /* Stack groups vertically on mobile */
-  gap: 10px; /* Reduced gap */
-  padding: 10px; /* Reduced padding */
+  flex-direction: column; 
+  gap: 12px; 
+  padding: 15px; 
   background-color: var(--row-base); 
-  border-radius: 8px;
-  margin-bottom: 15px; /* Reduced margin */
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Softer shadow */
+  border-radius: .5rem; /* Softer radius */
+  margin-bottom: 20px; 
+  border: 1px solid var(--color-light-gray);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06); 
 }
 body.dark .filter-controls {
-  background-color: var(--row-alt); 
+  background-color: var(--row-alt-dark); 
+  border-color: var(--color-border-dark);
 }
 
 .filter-group {
   display: flex;
   flex-direction: column; 
-  gap: 5px; 
+  gap: 6px; 
 }
 .filter-group label {
-  font-size: 0.85em; /* Slightly smaller label */
+  font-size: 0.88em; 
+  font-weight: 500;
   color: var(--text-light);
 }
 body.dark .filter-group label {
   color: var(--text-dark);
 }
-.filter-group input[type="number"],
-.filter-group select {
-  padding: 10px; /* Increased padding for touch */
-  border: 1px solid var(--input-border-light);
-  border-radius: 4px;
-  background-color: var(--input-bg-light);
-  color: var(--text-light);
-  width: 100%; /* Full width for inputs/selects in column layout */
-}
-body.dark .filter-group input[type="number"],
-body.dark .filter-group select {
-  background-color: var(--input-bg-dark);
-  color: var(--text-dark);
-  border-color: var(--input-border-dark);
-}
 
+/* Input and Select Styling */
+.filter-group input[type="number"],
+.filter-group select,
 .filter-group input[type="checkbox"] {
-  margin-right: 5px;
-  width: auto; /* Checkbox width should not be 100% */
+  padding: var(--input-padding-y) var(--input-padding-x);
+  font-size: var(--input-font-size);
+  border: 1px solid var(--input-border-light);
+  border-radius: var(--input-border-radius);
+  background-color: var(--input-bg-light);
+  color: var(--input-text-light);
+  width: 100%; 
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.filter-group input[type="number"]:focus,
+.filter-group select:focus {
+  border-color: var(--input-focus-border-light);
+  outline: 0;
+  box-shadow: 0 0 0 var(--button-focus-shadow-size) var(--input-focus-shadow-light);
+}
+.filter-group input[type="checkbox"] {
+  width: auto; 
+  height: 1.1em; /* Adjust size */
+  width: 1.1em;
+  margin-right: 8px;
+  accent-color: var(--color-primary); /* Modern way to color checkbox */
 }
 .filter-group .checkbox-label { 
-    font-size: 0.85em;
+    font-size: 0.9em;
     display: inline-flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .filter-buttons {
   display: flex;
-  flex-direction: column; /* Stack buttons on small screens */
-  gap: 8px; /* Reduced gap */
-  margin-top: 10px; /* Space above buttons */
+  flex-direction: column; 
+  gap: 10px; 
+  margin-top: 15px; 
 }
 
-.filter-buttons button {
-  padding: 10px 15px; /* Good padding for touch */
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  width: 100%; /* Full width buttons */
-}
 .filter-buttons button#btn-apply-filters {
-  background-color: var(--button-primary-bg);
-  color: var(--button-primary-text);
-}
-body.dark .filter-buttons button#btn-apply-filters {
-    background: #005cbf;
+  background-color: var(--color-primary);
+  color: #fff;
 }
 .filter-buttons button#btn-reset-filters {
-  background-color: var(--button-secondary-bg);
-  color: var(--button-secondary-text);
+  background-color: transparent;
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
 }
 body.dark .filter-buttons button#btn-reset-filters {
-    background: #555;
+  color: var(--text-dark);
+  border-color: var(--color-border-dark);
 }
 
-/* Order Simulation Area */
+
 .order-simulation-area {
-  padding: 10px; /* Reduced padding */
+  padding: 15px; 
   background-color: var(--row-base);
-  border-radius: 8px;
-  margin-bottom: 15px; /* Reduced margin */
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border-radius: .5rem;
+  margin-bottom: 20px; 
+  border: 1px solid var(--color-light-gray);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 body.dark .order-simulation-area {
-  background-color: var(--row-alt);
+  background-color: var(--row-alt-dark);
+  border-color: var(--color-border-dark);
 }
 
 .order-simulation-area button#btn-simulate-order {
-  padding: 10px 15px; /* Good padding for touch */
-  background-color: var(--color-reavita); 
+  background-color: var(--color-success); 
   color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-bottom: 10px; /* Reduced margin */
-  width: 100%; /* Full width button */
-}
-body.dark .order-simulation-area button#btn-simulate-order {
-    background-color: #4a752c;
-}
-
-.order-summary {
-  border-top: 1px solid #ddd;
-  padding-top: 10px; /* Reduced padding */
-}
-body.dark .order-summary {
-    border-top-color: #444;
-}
-.order-summary-table-container { /* Added container for scrolling */
-    overflow-x: auto;
-}
-.order-summary-table {
-    width: 100%;
-    min-width: 400px; /* Minimum width before scroll appears */
-    border-collapse: collapse;
-    margin-top: 10px;
-    font-size: 0.85em; /* Smaller font for tables */
-}
-.order-summary-table th, .order-summary-table td {
-    border: 1px solid #ddd;
-    padding: 6px; /* Reduced padding */
-    text-align: left;
-}
-body.dark .order-summary-table th, body.dark .order-summary-table td {
-    border-color: #444;
-}
-.order-summary-table th {
-    background-color: #f2f2f2;
-}
-body.dark .order-summary-table th {
-    background-color: #333;
-}
-.order-summary-table tfoot td {
-    font-weight: bold;
-}
-.no-results-message {
-    padding: 15px; /* Reduced padding */
-    text-align: center;
-    font-style: italic;
-    color: #777;
-}
-body.dark .no-results-message {
-    color: #aaa;
-}
-
-main {
-  flex: 1;
-}
-/* Container for product tables to enable horizontal scrolling */
-.table-container-scrollable {
-    overflow-x: auto;
-    margin-bottom: 15px; /* Space below each scrollable table group */
-}
-
-
-footer p {
-  text-align: center;
-  margin-top: auto;
-  padding: 15px 0; /* Reduced padding */
-  color: #666;
-  font-style: italic;
-  font-size: 0.8em; /* Smaller footer text */
-}
-
-body.dark footer p {
-  color: #aaa;
-}
-
-.table-brand {
-  border-collapse: collapse;
   width: 100%; 
-  min-width: 600px; /* Minimum width before scroll appears for product table */
-  table-layout: auto; /* Changed from fixed to auto for better content wrapping initially */
-  font-size: 0.85em; /* Smaller font for tables */
-}
-
-/* Colgroup might be less effective with table-layout: auto, but keep for structure */
-.table-brand col:nth-child(1) { width: 45%; } /* Descrição */
-.table-brand col:nth-child(2) { width: 15%; } /* Unidade */
-.table-brand col:nth-child(3) { width: 15%; } /* Caixa */
-.table-brand col:nth-child(4) { width: 25%; } /* Quantidade - slightly more space */
-
-
-.table-brand .brand-banner {
-  display: flex;
-  align-items: center;
-  padding: 6px; /* Reduced padding */
-  color: #fff;
-}
-
-.table-brand .brand-banner img {
-  height: 30px; /* Smaller logo */
-  margin-right: 10px;
-}
-
-.table-brand th,
-.table-brand td {
-  border: 1px solid #ccc; 
-  padding: 6px; /* Reduced padding */
-  text-align: left;
-  word-wrap: break-word; /* Ensure long words wrap */
-}
-body.dark .table-brand th, body.dark .table-brand td {
-    border-color: #444;
+  margin-bottom: 15px;
+  padding: .6rem var(--button-padding-x); /* Slightly larger */
 }
 
 
-.table-brand th {
-  background: #e9e9e9; 
-  text-transform: uppercase;
-  font-size: 0.8em; /* Smaller header font */
+#order-simulation-summary {
+  display: none;
+  border-top: 1px solid var(--color-border-light);
+  padding-top: 15px; 
+}
+body.dark #order-simulation-summary { 
+    border-top-color: var(--color-border-dark);
+}
+body.order-interface-visible #order-simulation-summary {
+  display: block; 
 }
 
-body.dark .table-brand th {
-  background: #3a3a3a;
-}
+/* Other styles remain largely the same below this line, only adjusted if directly impacted */
+.order-summary-table-container { overflow-x: auto; }
+.order-summary-table { width: 100%; min-width: 400px; border-collapse: collapse; margin-top: 10px; font-size: 0.85em; }
+.order-summary-table th, .order-summary-table td { border: 1px solid var(--color-border-light); padding: 6px; text-align: left; }
+body.dark .order-summary-table th, body.dark .order-summary-table td { border-color: var(--color-border-dark); }
+.order-summary-table th { background-color: var(--color-light-gray); }
+body.dark .order-summary-table th { background-color: var(--color-dark-gray); }
+.order-summary-table tfoot td { font-weight: bold; }
+.no-results-message { padding: 15px; text-align: center; font-style: italic; color: #777; }
+body.dark .no-results-message { color: #aaa; }
+main { flex: 1; }
+.table-container-scrollable { overflow-x: auto; margin-bottom: 15px; }
+footer p { text-align: center; margin-top: auto; padding: 15px 0; color: #666; font-style: italic; font-size: 0.8em; }
+body.dark footer p { color: #aaa; }
+.table-brand { border-collapse: collapse; width: 100%; min-width: 600px; table-layout: auto; font-size: 0.85em; }
+.table-brand col:nth-child(1) { width: 45%; } 
+.table-brand col:nth-child(2) { width: 15%; } 
+.table-brand col:nth-child(3) { width: 15%; } 
+.table-brand .brand-banner { display: flex; align-items: center; padding: 6px; color: #fff; }
+.table-brand .brand-banner img { height: 30px; margin-right: 10px; }
+.table-brand th, .table-brand td { border: 1px solid var(--color-border-light); padding: 6px; text-align: left; word-wrap: break-word; vertical-align: middle; }
+body.dark .table-brand th, body.dark .table-brand td { border-color: var(--color-border-dark); }
+.table-brand thead th { background: var(--color-light-gray); text-transform: uppercase; font-size: 0.8em; }
+body.dark .table-brand thead th { background: var(--color-dark-gray); }
+.table-brand tbody tr.product-data-row:nth-child(odd) { background-color: var(--row-base); }
+.table-brand tbody tr.product-data-row:nth-child(even) { background-color: var(--row-alt); }
+.tag { display: inline-block; margin-left: 5px; padding: 2px 5px; border-radius: 3px; font-size: 0.7em; font-weight: bold; vertical-align: middle; text-transform: uppercase; color: var(--tag-text); }
+.tag.novo { background-color: #c8e6c9; } .tag.ultimo-lote { background-color: #ffe0b2; } .tag.chá { background-color: var(--tag-cha); } .tag.gotas { background-color: #bbdefb; }
+.quantity-control { display: flex; align-items: center; justify-content: center; gap: 5px; }
+.quantity-btn { background-color: var(--color-light-gray); color: var(--text-light); border: 1px solid var(--color-border-light); border-radius: var(--button-border-radius); padding: 4px 8px; cursor: pointer; font-size: 1em; line-height: 1; min-width: 30px; height: 30px; transition: background-color 0.2s; }
+body.dark .quantity-btn { background-color: var(--color-dark-gray); color: var(--text-dark); border-color: var(--color-border-dark); }
+.quantity-btn:hover { filter: brightness(var(--button-hover-brightness)); }
+.quantity-display { min-width: 30px; padding: 4px 6px; text-align: center; font-weight: bold; border: 1px solid transparent; display: inline-block; vertical-align: middle; }
+.category-header { background-color: var(--category-header-bg-light) !important; font-weight: bold; text-align: center !important; font-size: 0.85em; }
+body.dark .category-header { background-color: var(--category-header-bg-dark) !important; }
+.category-header > th { background-color: inherit !important; color: inherit !important; }
+.quantity-column-header, .quantity-column-cell { display: none; }
+body.order-interface-visible .quantity-column-header, body.order-interface-visible .quantity-column-cell { display: table-cell; }
+#floating-order-total { position: fixed; bottom: 20px; right: 20px; background-color: var(--floating-total-bg-light); color: var(--floating-total-text-light); padding: 12px 20px; border: 1px solid var(--floating-total-border-light); border-radius: .5rem; box-shadow: var(--floating-total-shadow); z-index: 1000; font-size: 1.1em; font-weight: bold; display: none; transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out; opacity: 0; transform: translateY(10px); }
+body.dark #floating-order-total { background-color: var(--floating-total-bg-dark); color: var(--floating-total-text-dark); border-color: var(--floating-total-border-dark); }
+body.order-interface-visible #floating-order-total { display: block; opacity: 1; transform: translateY(0); }
 
-.table-brand tr:nth-child(even) {
-  background: var(--row-alt);
-}
-
-.table-brand tr:nth-child(odd) {
-  background: var(--row-base);
-}
-
-.tag {
-  display: inline-block;
-  margin-left: 5px; /* Reduced margin */
-  padding: 2px 5px; 
-  border-radius: 3px; /* Smaller radius */
-  font-size: 0.7em; 
-  font-weight: bold;
-  vertical-align: middle;
-  text-transform: uppercase;
-  color: var(--tag-text);
-}
-
-.tag.novo        { background-color: #c8e6c9; }
-.tag.ultimo-lote { background-color: #ffe0b2; }
-.tag.chá         { background-color: var(--tag-cha); }
-.tag.gotas       { background-color: #bbdefb; }
-
-.quantity-input {
-  width: 60px; 
-  padding: 8px; /* Good padding for touch */
-  text-align: center;
-  border: 1px solid var(--input-border-light);
-  border-radius: 4px;
-  background-color: var(--input-bg-light);
-  color: var(--text-light);
-  -moz-appearance: textfield; /* Firefox - hide spinners */
-}
-.quantity-input::-webkit-outer-spin-button,
-.quantity-input::-webkit-inner-spin-button {
-  -webkit-appearance: none; /* Safari and Chrome - hide spinners */
-  margin: 0;
-}
-
-body.dark .quantity-input {
-  background-color: var(--input-bg-dark);
-  color: var(--text-dark);
-  border-color: var(--input-border-dark);
-}
-
-.category-header > th, .table-brand .category-header { 
-    background-color: #f0f0f0; 
-    font-weight: bold;
-    text-align: center;
-    font-size: 0.85em;
-}
-body.dark .category-header > th, body.dark .table-brand .category-header {
-    background-color: #282828;
-}
-
-/* Medium screens (tablets) */
 @media (min-width: 768px) {
-  body {
-    padding: 20px; /* Restore padding */
-    font-size: 16px; /* Restore base font size */
-  }
-  .page-header {
-    margin-bottom: 20px;
-  }
-  .page-banner {
-    padding: 20px 0;
-  }
-  .header-buttons {
-    flex-wrap: nowrap; /* No wrap for header buttons */
-  }
-  .header-buttons button {
-    flex-grow: 0; /* Buttons don't grow */
-  }
-  .filter-controls {
-    flex-direction: row; /* Filters back to horizontal layout */
-    flex-wrap: wrap; /* Allow wrapping for filter groups */
-    padding: 15px;
-    margin-bottom: 20px;
-  }
-  .filter-group {
-    flex-basis: auto; /* Allow filter groups to size based on content */
-    min-width: 150px; /* Min width for filter groups */
-  }
-  .filter-group input[type="number"],
-  .filter-group select {
-    width: auto; /* Inputs size based on content or specific CSS */
-  }
-  .filter-buttons {
-    flex-direction: row; /* Buttons side-by-side */
-    width: auto; /* Buttons container auto width */
-    margin-top: auto; /* Align to bottom of filter row */
-  }
-  .filter-buttons button {
-    width: auto; /* Buttons auto width */
-  }
-  .order-simulation-area {
-    padding: 15px;
-    margin-bottom: 20px;
-  }
-  .order-simulation-area button#btn-simulate-order {
-    width: auto; /* Simulate button auto width */
-    margin-bottom: 15px;
-  }
-  .order-summary {
-    padding-top: 15px;
-  }
-  .order-summary-table {
-    font-size: 1em; /* Restore font size */
-  }
-  .order-summary-table th, .order-summary-table td {
-    padding: 8px; /* Restore padding */
-  }
-  .table-brand {
-    font-size: 1em; /* Restore font size */
-    table-layout: fixed; /* Revert to fixed for desktop for consistent col widths */
-  }
-   .table-brand col:nth-child(1) { width: 50%; } 
-   .table-brand col:nth-child(2) { width: 15%; }
-   .table-brand col:nth-child(3) { width: 15%; }
-   .table-brand col:nth-child(4) { width: 20%; }
-  .table-brand th,
-  .table-brand td {
-    padding: 10px; /* Restore padding */
-  }
-   .table-brand .brand-banner img {
-    height: 40px; /* Restore logo size */
-  }
-  .category-header > th, .table-brand .category-header {
-    font-size: 0.9em; /* Restore font size */
-  }
-   .quantity-input {
-    width: 70px; 
-  }
+  body { padding: 20px; font-size: 16px; padding-bottom: 20px; }
+  #floating-order-total { font-size: 1.15em; padding: 15px 25px; }
+  .page-header { margin-bottom: 20px; }
+  .page-banner { padding: 20px 0; }
+  .header-buttons { flex-wrap: nowrap; }
+  .header-buttons button { flex-grow: 0; }
+  .filter-controls { flex-direction: row; flex-wrap: wrap; padding: 20px; margin-bottom: 25px; gap: 20px; }
+  .filter-group { flex-basis: calc(33.333% - 20px); min-width: 180px; } /* Adjust for better wrapping */
+  .filter-group input[type="number"], .filter-group select { width: auto; flex-grow: 1; }
+  .filter-buttons { flex-direction: row; width: auto; margin-top: auto; align-items: flex-end; flex-basis: 100%; justify-content: flex-start; }
+  .filter-buttons button { width: auto; }
+  .order-simulation-area { padding: 20px; margin-bottom: 25px; }
+  .order-simulation-area button#btn-simulate-order { width: auto; margin-bottom: 20px; padding: .75rem 1.25rem; }
+  .order-summary { padding-top: 20px; }
+  .order-summary-table { font-size: 1em; }
+  .order-summary-table th, .order-summary-table td { padding: 8px; }
+  .table-brand { font-size: 1em; table-layout: fixed; }
+  .table-brand col:nth-child(1) { width: 50%; } .table-brand col:nth-child(2) { width: 15%; } .table-brand col:nth-child(3) { width: 15%; } .table-brand col:nth-child(4) { width: 20%; } 
+  body:not(.order-interface-visible) .table-brand col:nth-child(1) { width: calc(50% + (20% / 3)); } 
+  body:not(.order-interface-visible) .table-brand col:nth-child(2) { width: calc(15% + (20% / 3)); }
+  body:not(.order-interface-visible) .table-brand col:nth-child(3) { width: calc(15% + (20% / 3)); }
+  body:not(.order-interface-visible) .table-brand col:nth-child(4) { width: 0; }
+  .table-brand th, .table-brand td { padding: 10px; }
+  .table-brand .brand-banner img { height: 40px; }
+  .category-header { font-size: 0.9em; }
+  .quantity-control { justify-content: flex-start; }
+  .quantity-btn { padding: 5px 10px; }
+  .quantity-display { padding: 5px 8px; }
 }
 
-
-/* Print-specific styles */
-@media print {
-  body {
-    padding: 0;
-    background: #fff !important; 
-    color: #000 !important; 
-    font-size: 10pt; /* Base font size for print */
-  }
-  .page-header,
-  footer,
-  .filter-controls,
-  .order-simulation-area button#btn-simulate-order, 
-  .header-buttons button#btn-theme,
-  #btn-export.hide-on-print /* Class to hide export button if needed */
-   {
-    display: none !important;
-  }
-  
-  .table-container-scrollable { /* Remove scroll for print */
-      overflow-x: visible;
-  }
-
-  .table-brand {
-    page-break-inside: avoid;
-    border: 1px solid #ccc !important; 
-    font-size: 9pt; /* Smaller font for tables in print */
-    min-width: auto !important; /* Remove min-width for print */
-    table-layout: auto !important; /* Auto layout for print to fit content */
-  }
-  .table-brand th, .table-brand td {
-    border: 1px solid #ccc !important;
-    padding: 4px !important; /* Reduced padding for print */
-    word-wrap: break-word;
-  }
-  .table-brand th {
-    background-color: #eee !important;
-  }
-   .table-brand tr:nth-child(even) {
-    background-color: #f9f9f9 !important;
-  }
-  .table-brand tr:nth-child(odd) {
-    background-color: #fff !important;
-  }
-  .quantity-input { /* Make quantity visible if printing filled form */
-      border: none; 
-      background: transparent;
-      text-align: right;
-      width: auto;
-  }
-
-
-  .order-summary { 
-    margin-top: 0;
-    padding-top: 0;
-    border-top: none;
-    box-shadow: none;
-  }
-  .order-summary-table-container { /* Remove scroll for print */
-      overflow-x: visible;
-  }
-  .order-summary-table {
-    font-size: 9pt; 
-    min-width: auto !important; /* Remove min-width for print */
-  }
-  .order-summary-table th, .order-summary-table td {
-    padding: 4px !important; /* Reduced padding for print */
-  }
-  body, .page-banner, .table-brand .brand-banner, .table-brand th, .table-brand tr, .tag {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
+@media print { /* Print styles largely unchanged, but ensure they use new variables if applicable */
+  body { padding: 0; background: #fff !important; color: #000 !important; font-size: 10pt; }
+  #floating-order-total, .page-header, footer, .filter-controls, .order-simulation-area button#btn-simulate-order, .header-buttons button#btn-theme, #btn-export.hide-on-print { display: none !important; }
+  .table-container-scrollable { overflow-x: visible; }
+  .table-brand { page-break-inside: avoid; border: 1px solid var(--color-border-light) !important; font-size: 9pt; min-width: auto !important; table-layout: auto !important; }
+  .table-brand th, .table-brand td { border: 1px solid var(--color-border-light) !important; padding: 4px !important; word-wrap: break-word; }
+  .table-brand thead th { background-color: var(--color-light-gray) !important; }
+  .table-brand tbody tr.product-data-row:nth-child(odd) { background-color: #fff !important; }
+  .table-brand tbody tr.product-data-row:nth-child(even) { background-color: #f9f9f9 !important; }
+  .quantity-column-header, .quantity-column-cell { display: table-cell !important; }
+  .quantity-control { justify-content: flex-end; } .quantity-btn { display: none; }
+  .quantity-display { border: none; background: transparent; text-align: right; width: auto; padding: 0; font-weight: normal; }
+  .category-header { background-color: var(--color-light-gray) !important; }
+  .order-summary { margin-top: 0; padding-top: 0; border-top: none; box-shadow: none; }
+  .order-summary-table-container { overflow-x: visible; }
+  .order-summary-table { font-size: 9pt; min-width: auto !important; }
+  .order-summary-table th, .order-summary-table td { padding: 4px !important; }
+  .order-summary-table tr.product-data-row:nth-child(odd) { background-color: #fff !important; }
+  .order-summary-table tr.product-data-row:nth-child(even) { background-color: #f9f9f9 !important; }
+  body, .page-banner, .table-brand .brand-banner, .table-brand thead th, .table-brand tr, .tag, .category-header { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 }
 
-/* Styles for when PDF export of quote is active (using html2pdf.js) */
-body.pdf-export-active .page-header,
-body.pdf-export-active footer,
-body.pdf-export-active .filter-controls,
-body.pdf-export-active .order-simulation-area button#btn-simulate-order,
-body.pdf-export-active #tabela-container, 
-body.pdf-export-active .header-buttons,
-body.pdf-export-active .table-container-scrollable /* Hide scroll container too */
- {
-  display: none !important;
-}
-
-body.pdf-export-active #order-simulation-summary {
-  display: block !important; 
-  margin: 0;
-  padding: 10px; /* Padding for the PDF content */
-  box-shadow: none;
-  border: none;
-}
-body.pdf-export-active { 
-    padding: 0;
-    margin: 0;
-    background-color: #fff !important; 
-    font-size: 10pt; /* Consistent font size for PDF */
-}
-body.pdf-export-active .order-summary-table-container {
-    overflow-x: visible; /* No scroll in PDF */
-}
-body.pdf-export-active .order-summary-table {
-    min-width: auto !important; /* Ensure it doesn't try to be too wide */
-}
-
-
-/* Ensure dark mode styles are overridden for PDF export if active */
-body.dark.pdf-export-active, 
-body.dark.pdf-export-active #order-simulation-summary,
-body.dark.pdf-export-active .order-summary-table th,
-body.dark.pdf-export-active .order-summary-table td {
-    background-color: #fff !important;
-    color: #000 !important;
-    border-color: #ccc !important;
-}
-body.dark.pdf-export-active .order-summary-table th {
-    background-color: #f2f2f2 !important; 
-}
-
-/* Additions to wrap tables in scrollable containers in JS:
-   Each .table-brand should be wrapped in a .table-container-scrollable div.
-   The .order-summary-table should be wrapped in .order-summary-table-container div.
-   This will be done in script.js where these tables are created/rendered.
-*/
+body.pdf-export-active .page-header, body.pdf-export-active footer, body.pdf-export-active .filter-controls, body.pdf-export-active .order-simulation-area button#btn-simulate-order, body.pdf-export-active #tabela-container, body.pdf-export-active .header-buttons, body.pdf-export-active .table-container-scrollable, body.pdf-export-active #floating-order-total { display: none !important; }
+body.pdf-export-active #order-simulation-summary { display: block !important; margin: 0; padding: 10px; box-shadow: none; border: none; }
+body.pdf-export-active { padding: 0; margin: 0; background-color: #fff !important; font-size: 10pt; }
+body.pdf-export-active .order-summary-table-container { overflow-x: visible; }
+body.pdf-export-active .order-summary-table { min-width: auto !important; }
+body.dark.pdf-export-active, body.dark.pdf-export-active #order-simulation-summary, body.dark.pdf-export-active .order-summary-table th, body.dark.pdf-export-active .order-summary-table td, body.dark.pdf-export-active .order-summary-table tr.product-data-row { background-color: #fff !important; color: #000 !important; border-color: var(--color-border-light) !important; } /* Use light border for PDF */
+body.dark.pdf-export-active .order-summary-table th { background-color: var(--color-light-gray) !important; }
+body.dark.pdf-export-active .order-summary-table tr.product-data-row:nth-child(odd) { background-color: #fff !important; }
+body.dark.pdf-export-active .order-summary-table tr.product-data-row:nth-child(even) { background-color: #f9f9f9 !important; }

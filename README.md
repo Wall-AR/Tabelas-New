@@ -1,57 +1,61 @@
-# B2B Supplement Catalog & Order Simulator
+# Catálogo B2B de Suplementos & Simulador de Pedidos
 
-## Description
+## Descrição
 
-This project is an interactive B2B product catalog designed for supplement brands and their customers. It allows users to browse products, filter them based on various criteria, simulate an order by adding quantities, and export the catalog or a generated quote as a PDF. The application features a responsive design for usability on desktop, tablet, and mobile devices, as well as a dark/light theme option.
+Este projeto é um catálogo interativo de produtos B2B, desenvolvido para marcas de suplementos e seus clientes. Ele permite aos usuários navegar pelos produtos, filtrá-los com base em diversos critérios, simular um pedido adicionando quantidades, e exportar o catálogo ou uma cotação gerada como PDF. A aplicação possui um design responsivo para usabilidade em desktops, tablets e dispositivos móveis, além de uma opção de tema claro/escuro.
 
-## Key Features
+## Principais Funcionalidades
 
-*   **Product Listing by Brand**: Products are organized and displayed under their respective brands (e.g., Purafor, Reavita). Each brand has a distinct banner and color scheme.
-*   **Product Categorization**: Items are categorized for easier browsing. Main categories include:
-    *   Capsules
-    *   Liquid extracts (drops)
-    *   Herbal teas
-    *   Powders
-    *   Gummies
-    *   Blister packs
-    *   Oils
-    *   New arrivals (identified by tag)
-    *   Last batch (identified by tag)
-    *   Promotions (filter option)
-*   **Smart Filters**: Users can refine the product list using a comprehensive set of filters:
-    *   **Category Filter**: Select from a list of all available product categories.
-    *   **Stock Status Filter**: Filter by "New arrivals" or "Last batch" items.
-    *   **Price Range Filter**: Specify minimum and maximum unit prices.
-    *   **Promotions Filter**: Checkbox to show only items categorized under "Promotions".
-*   **Order Simulation Tool**:
-    *   Users can input desired quantities for each product directly in the catalog table.
-    *   Clicking the "Simular Pedido" (Simulate Order) button calculates the total for each item and a grand total for the selection.
-    *   A detailed summary of the simulated order (product, unit price, quantity, item total, grand total) is displayed on the page.
-*   **PDF Export**:
-    *   **Catalog Export**: The full product catalog (optionally filtered) can be exported as a PDF using the browser's print functionality.
-    *   **Quote Export**: If an order simulation is active, the export button changes to "Exportar Cotação PDF", allowing users to download a PDF of the order summary using `html2pdf.js`.
-*   **Responsive Design**: The application layout is optimized for various screen sizes, ensuring good usability on desktops, tablets, and mobile phones. This includes responsive filters and scrollable tables.
-*   **Dark/Light Theme**: A toggle button allows users to switch between a light and a dark visual theme for comfortable viewing.
+*   **Listagem de Produtos por Marca**: Os produtos são organizados e exibidos sob suas respectivas marcas (ex: Purafor, Reavita). Cada marca possui um banner e esquema de cores distintos.
+*   **Categorização de Produtos**: Os itens são categorizados para facilitar a navegação. As categorias principais incluem:
+    *   Cápsulas
+    *   Extratos Líquidos (gotas)
+    *   Chás Medicinais
+    *   Pós
+    *   Gomas
+    *   Cartelas (Blister packs)
+    *   Óleos
+    *   Blends (mantido em inglês)
+    *   Novidades (identificadas por tag)
+    *   Último Lote (identificado por tag)
+    *   Promoções (opção de filtro)
+    *   Outros
+*   **Filtros Inteligentes**: Os usuários podem refinar a lista de produtos usando um conjunto abrangente de filtros:
+    *   **Filtro de Categoria**: Selecione de uma lista de todas as categorias de produtos disponíveis.
+    *   **Filtro de Status de Estoque**: Filtre por itens em "Novidades" ou "Último Lote".
+    *   **Filtro de Faixa de Preço**: Especifique preços unitários mínimos e máximos.
+    *   **Filtro de Promoções**: Caixa de seleção para mostrar apenas itens categorizados como "Promoções".
+*   **Ferramenta de Simulação de Pedido**:
+    *   Clique em "Simular Pedido" para ativar a interface de inserção de quantidades (coluna "Quantidade" nas tabelas) e a área de resumo do pedido.
+    *   Insira quantidades para os produtos em múltiplos de 12 usando os botões +/- dedicados.
+    *   Visualize um resumo detalhado do pedido (produto, preço unitário, quantidade, total do item) e o valor total.
+    *   Exibição flutuante em tempo real do valor total do pedido atual.
+*   **Exportação PDF**:
+    *   **Exportação de Catálogo**: O catálogo completo de produtos (opcionalmente filtrado) pode ser exportado como PDF usando a funcionalidade de impressão do navegador.
+    *   **Exportação de Cotação**: Se uma simulação de pedido estiver ativa, o botão de exportação muda para "Exportar Cotação PDF", permitindo aos usuários baixar um PDF do resumo do pedido usando `html2pdf.js`.
+*   **Design Responsivo**: O layout da aplicação é otimizado para diversos tamanhos de tela, garantindo boa usabilidade em desktops, tablets e celulares. Isso inclui filtros responsivos e tabelas roláveis.
+*   **Tema Claro/Escuro**: Um botão de alternância permite aos usuários mudar entre um tema visual claro e escuro para visualização confortável.
 
-## How to Use
+## Como Usar
 
-1.  **Browse Products**: Scroll through the catalog to view products, which are grouped by brand and then by category within each brand.
-2.  **Filter Products (Optional)**:
-    *   Use the filter controls at the top of the page to narrow down the product list.
-    *   Select a category, stock status, enter a price range, or check "Promotions".
-    *   Click "Aplicar Filtros" (Apply Filters). To see all products again, click "Limpar Filtros" (Clear Filters).
-3.  **Input Quantities**: In the "Quantidade" (Quantity) column of the product tables, enter the desired amount for any product you wish to include in an order.
-4.  **Simulate Order**: Click the "Simular Pedido" (Simulate Order) button. An order summary will appear below the button, detailing selected items and totals.
-5.  **Export**:
-    *   **To Export a Quote**: After simulating an order, the main export button will read "Exportar Cotação PDF". Click it to download the quote.
-    *   **To Export the Catalog**: If no order is simulated, or after clearing a simulation, the button will read "Exportar Catálogo PDF". Click it to open the system print dialog for the catalog view.
-6.  **Change Theme**: Click the "Tema Escuro" / "Tema Claro" (Dark/Light Theme) button to toggle the visual theme.
+1.  **Navegar pelos Produtos**: Role pelo catálogo para visualizar os produtos, que são agrupados por marca e, em seguida, por categoria dentro de cada marca.
+2.  **Filtrar Produtos (Opcional)**:
+    *   Use os controles de filtro no topo da página para refinar a lista de produtos.
+    *   Selecione uma categoria, status de estoque, insira uma faixa de preço ou marque "Promoções".
+    *   Clique em "Aplicar Filtros". Para ver todos os produtos novamente, clique em "Limpar Filtros".
+3.  **Ativar Interface de Pedido**: Clique no botão "Simular Pedido". Isso revelará a coluna "Quantidade" nas tabelas de produtos e a área de resumo do pedido, além do total flutuante do pedido. O botão mudará para "Atualizar Pedido".
+4.  **Ajustar Quantidades**: Utilize os botões +/- na coluna "Quantidade" para adicionar ou remover produtos do seu pedido. As quantidades são ajustadas em múltiplos de 12 (representando caixas). O total flutuante é atualizado em tempo real.
+5.  **Atualizar/Visualizar Simulação Completa**: Após ajustar as quantidades, clique em "Atualizar Pedido" para que o resumo principal do pedido seja atualizado.
+6.  **Exportar**:
+    *   **Para Exportar uma Cotação**: Com a interface de pedido ativa e itens no pedido, o botão principal de exportação indicará "Exportar Cotação PDF". Clique nele para baixar a cotação.
+    *   **Para Exportar o Catálogo**: Se a interface de pedido não estiver ativa (ou seja, antes de clicar em "Simular Pedido" pela primeira vez, ou após limpar os filtros e o pedido), o botão indicará "Exportar Catálogo PDF". Clique nele para abrir a caixa de diálogo de impressão do sistema para o catálogo.
+7.  **Mudar Tema**: Clique no botão "Tema Escuro" / "Tema Claro" para alternar o tema visual.
 
-## Local Development
+## Desenvolvimento Local
 
-This project consists of static HTML, CSS, and JavaScript files. No special build steps are required. To run locally:
+Este projeto consiste em arquivos HTML, CSS e JavaScript estáticos. Nenhum passo especial de compilação é necessário. Para executar localmente:
 
-1.  Clone the repository (if applicable) or download the files.
-2.  Open the `index.html` file directly in a web browser.
+1.  Clone o repositório (se aplicável) ou baixe os arquivos.
+2.  Abra o arquivo `index.html` diretamente em um navegador web.
 
-All functionalities are client-side.
+Todas as funcionalidades são executadas no lado do cliente.
