@@ -8,10 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
     "Último Lote", "Promoções", "Populares", "Óleos", "Pós", "Gomas", "Cartelas", "Blends", "Outros"
   ];
 
+  // Placeholder for Base64 encoded logo. Replace with actual Base64 string.
+  const logoBase64Purafor = "data:image/png;base64,PLACEHOLDER_FOR_PURAFOR_LOGO_BASE64_STRING"; 
+  // Add other logos if needed, e.g.:
+  // const logoBase64Reavita = "data:image/png;base64,PLACEHOLDER_FOR_REAVITA_LOGO_BASE64_STRING";
+  // For now, a generic placeholder for any logo to be used in the quote:
+  const quoteLogoBase64 = logoBase64Purafor; // Default to Purafor or use a generic one
+
   let tableData = [ 
     {
-      brand: '',
-      logo: 'images/purafor-logo.png',
+      brand: '', // Assuming brand name might be set here later or is generic for now
+      logo: 'images/purafor-logo.png', // Path for on-page display
       colorVar: '--color-purafor',
       items: [
         { desc: 'Artrion 60caps', unit: 31.46, tag: '', category: 'Cápsulas' },
@@ -54,8 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ]
     },
     {
-      brand: '',
-      logo: 'images/reavita-logo.png',
+      brand: '', // Assuming brand name might be set here later
+      logo: 'images/reavita-logo.png', // Path for on-page display
       colorVar: '--color-reavita',
       items: [
         { desc: 'Amargo Detox 60cap', unit: 12.25, tag: '', category: 'Cápsulas' },
@@ -357,8 +364,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     orderSimulationSummaryEl.innerHTML = ''; 
     if (currentSimulatedItems.length > 0) {
-      let summaryHTML = `<div class="pdf-logo-placeholder"><img src="images/purafor-logo.png" alt="Logo da Empresa" style="max-height: 50px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;"></div>`;
-      summaryHTML += `<h2 class="quote-title" style="text-align:center;">Cotação de Pedido</h2>`;
+      // Use quoteLogoBase64 for the src
+      let summaryHTML = `<div class="pdf-logo-placeholder"><img src="${quoteLogoBase64}" alt="Logo da Empresa" class="pdf-quote-logo"></div>`;
+      summaryHTML += `<h2 class="quote-title">Cotação de Pedido</h2>`; // Removed inline style, will be handled by CSS
       summaryHTML += '<div class="order-summary-table-container"><table class="order-summary-table"><thead><tr><th>Produto</th><th>Preço Unit.</th><th>Qtde.</th><th>Total Item</th></tr></thead><tbody>';
       currentSimulatedItems.forEach(item => {
         summaryHTML += `<tr class="product-data-row">
@@ -447,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('pdf-export-active'); 
         const element = orderSimulationSummaryEl;
         const opt = {
-          margin:       [15, 10, 15, 10], 
+          margin:       [15, 10, 15, 10], // mm: top, left, bottom, right
           filename:     'cotacao_pedido.pdf', 
           image:        { type: 'jpeg', quality: 0.98 },
           html2canvas:  { scale: 2, useCORS: true, logging: false, scrollY: 0 }, 
