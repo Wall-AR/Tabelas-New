@@ -2,30 +2,43 @@
 :root {
   --color-reavita: #548235;
   --color-purafor: #00CC99;
-  --row-alt: #e0e0e0;
+  --row-alt: #f0f0f0; 
   --row-base: #ffffff;
   --bg-light: #fafafa;
   --text-light: #333;
-  --bg-dark: #1e1e1e;
-  --text-dark: #eee;
+  --bg-dark: #121212; 
+  --text-dark: #f0f0f0; 
   --tag-cha: #a5d6a7;
   --tag-text: #000;
-  --banner-bg: #00CC99;
+  --banner-bg: #00CC99; 
+  --input-bg-light: #fff;
+  --input-text-light: #333;
+  --input-border-light: #ccc;
+  --input-bg-dark: #333;
+  --input-text-dark: #eee;
+  --input-border-dark: #555;
+  --button-primary-bg: #007bff;
+  --button-primary-text: #fff;
+  --button-secondary-bg: #6c757d;
+  --button-secondary-text: #fff;
 }
 
 body {
-  padding: 20px;
+  padding: 10px; /* Reduced padding for mobile first */
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   background: var(--bg-light);
   color: var(--text-light);
   transition: background 0.3s, color 0.3s;
+  font-size: 14px; /* Base font size for mobile */
 }
 
 body.dark {
   background: var(--bg-dark);
   color: var(--text-dark);
+  --row-alt: #2c2c2c;
+  --row-base: #1e1e1e;
 }
 
 * {
@@ -35,13 +48,13 @@ body.dark {
 
 .page-header {
   padding: 0;
-  margin-bottom: 20px;
+  margin-bottom: 15px; /* Reduced margin */
 }
 
 .page-banner {
-  background-color: var(--banner-bg);
+  background-color: var(--banner-bg); 
   text-align: center;
-  padding: 20px 0;
+  padding: 15px 0; /* Reduced padding */
 }
 
 .page-banner img {
@@ -51,34 +64,202 @@ body.dark {
 
 .header-buttons {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap; /* Allow buttons to wrap */
+  gap: 8px; /* Reduced gap */
   justify-content: center;
   margin-top: 10px;
 }
 
 .header-buttons button {
-  padding: 10px 20px;
+  padding: 8px 15px; /* Reduced padding */
   border: none;
-  background: #333;
-  color: #fff;
+  background: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.2s;
+  flex-grow: 1; /* Allow buttons to grow and share space */
+  min-width: 120px; /* Minimum width for buttons */
+}
+body.dark .header-buttons button {
+    background: #555;
+    color: #fff;
 }
 
 .header-buttons button:hover {
   opacity: 0.9;
 }
 
+/* Filter Controls Styling */
+.filter-controls {
+  display: flex;
+  flex-direction: column; /* Stack groups vertically on mobile */
+  gap: 10px; /* Reduced gap */
+  padding: 10px; /* Reduced padding */
+  background-color: var(--row-base); 
+  border-radius: 8px;
+  margin-bottom: 15px; /* Reduced margin */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Softer shadow */
+}
+body.dark .filter-controls {
+  background-color: var(--row-alt); 
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column; 
+  gap: 5px; 
+}
+.filter-group label {
+  font-size: 0.85em; /* Slightly smaller label */
+  color: var(--text-light);
+}
+body.dark .filter-group label {
+  color: var(--text-dark);
+}
+.filter-group input[type="number"],
+.filter-group select {
+  padding: 10px; /* Increased padding for touch */
+  border: 1px solid var(--input-border-light);
+  border-radius: 4px;
+  background-color: var(--input-bg-light);
+  color: var(--text-light);
+  width: 100%; /* Full width for inputs/selects in column layout */
+}
+body.dark .filter-group input[type="number"],
+body.dark .filter-group select {
+  background-color: var(--input-bg-dark);
+  color: var(--text-dark);
+  border-color: var(--input-border-dark);
+}
+
+.filter-group input[type="checkbox"] {
+  margin-right: 5px;
+  width: auto; /* Checkbox width should not be 100% */
+}
+.filter-group .checkbox-label { 
+    font-size: 0.85em;
+    display: inline-flex;
+    align-items: center;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-direction: column; /* Stack buttons on small screens */
+  gap: 8px; /* Reduced gap */
+  margin-top: 10px; /* Space above buttons */
+}
+
+.filter-buttons button {
+  padding: 10px 15px; /* Good padding for touch */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%; /* Full width buttons */
+}
+.filter-buttons button#btn-apply-filters {
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+body.dark .filter-buttons button#btn-apply-filters {
+    background: #005cbf;
+}
+.filter-buttons button#btn-reset-filters {
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+}
+body.dark .filter-buttons button#btn-reset-filters {
+    background: #555;
+}
+
+/* Order Simulation Area */
+.order-simulation-area {
+  padding: 10px; /* Reduced padding */
+  background-color: var(--row-base);
+  border-radius: 8px;
+  margin-bottom: 15px; /* Reduced margin */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+body.dark .order-simulation-area {
+  background-color: var(--row-alt);
+}
+
+.order-simulation-area button#btn-simulate-order {
+  padding: 10px 15px; /* Good padding for touch */
+  background-color: var(--color-reavita); 
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px; /* Reduced margin */
+  width: 100%; /* Full width button */
+}
+body.dark .order-simulation-area button#btn-simulate-order {
+    background-color: #4a752c;
+}
+
+.order-summary {
+  border-top: 1px solid #ddd;
+  padding-top: 10px; /* Reduced padding */
+}
+body.dark .order-summary {
+    border-top-color: #444;
+}
+.order-summary-table-container { /* Added container for scrolling */
+    overflow-x: auto;
+}
+.order-summary-table {
+    width: 100%;
+    min-width: 400px; /* Minimum width before scroll appears */
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 0.85em; /* Smaller font for tables */
+}
+.order-summary-table th, .order-summary-table td {
+    border: 1px solid #ddd;
+    padding: 6px; /* Reduced padding */
+    text-align: left;
+}
+body.dark .order-summary-table th, body.dark .order-summary-table td {
+    border-color: #444;
+}
+.order-summary-table th {
+    background-color: #f2f2f2;
+}
+body.dark .order-summary-table th {
+    background-color: #333;
+}
+.order-summary-table tfoot td {
+    font-weight: bold;
+}
+.no-results-message {
+    padding: 15px; /* Reduced padding */
+    text-align: center;
+    font-style: italic;
+    color: #777;
+}
+body.dark .no-results-message {
+    color: #aaa;
+}
+
 main {
   flex: 1;
 }
+/* Container for product tables to enable horizontal scrolling */
+.table-container-scrollable {
+    overflow-x: auto;
+    margin-bottom: 15px; /* Space below each scrollable table group */
+}
+
 
 footer p {
   text-align: center;
   margin-top: auto;
-  padding: 20px 0;
+  padding: 15px 0; /* Reduced padding */
   color: #666;
   font-style: italic;
+  font-size: 0.8em; /* Smaller footer text */
 }
 
 body.dark footer p {
@@ -86,41 +267,52 @@ body.dark footer p {
 }
 
 .table-brand {
-  margin-bottom: 40px;
   border-collapse: collapse;
-  width: 100%;
-  table-layout: fixed;
+  width: 100%; 
+  min-width: 600px; /* Minimum width before scroll appears for product table */
+  table-layout: auto; /* Changed from fixed to auto for better content wrapping initially */
+  font-size: 0.85em; /* Smaller font for tables */
 }
 
-.table-brand col:nth-child(1) { width: 60%; }
-.table-brand col:nth-child(2),
-.table-brand col:nth-child(3) { width: 20%; }
+/* Colgroup might be less effective with table-layout: auto, but keep for structure */
+.table-brand col:nth-child(1) { width: 45%; } /* Descrição */
+.table-brand col:nth-child(2) { width: 15%; } /* Unidade */
+.table-brand col:nth-child(3) { width: 15%; } /* Caixa */
+.table-brand col:nth-child(4) { width: 25%; } /* Quantidade - slightly more space */
+
 
 .table-brand .brand-banner {
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: 6px; /* Reduced padding */
   color: #fff;
 }
 
 .table-brand .brand-banner img {
-  height: 40px;
-  margin-right: 12px;
+  height: 30px; /* Smaller logo */
+  margin-right: 10px;
 }
 
 .table-brand th,
 .table-brand td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  border: 1px solid #ccc; 
+  padding: 6px; /* Reduced padding */
+  text-align: left;
+  word-wrap: break-word; /* Ensure long words wrap */
+}
+body.dark .table-brand th, body.dark .table-brand td {
+    border-color: #444;
 }
 
+
 .table-brand th {
-  background: #eee;
+  background: #e9e9e9; 
   text-transform: uppercase;
+  font-size: 0.8em; /* Smaller header font */
 }
 
 body.dark .table-brand th {
-  background: #444;
+  background: #3a3a3a;
 }
 
 .table-brand tr:nth-child(even) {
@@ -131,20 +323,12 @@ body.dark .table-brand th {
   background: var(--row-base);
 }
 
-body.dark .table-brand tr:nth-child(even) {
-  background: #2a2a2a;
-}
-
-body.dark .table-brand tr:nth-child(odd) {
-  background: #1e1e1e;
-}
-
 .tag {
   display: inline-block;
-  margin-left: 8px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.75rem;
+  margin-left: 5px; /* Reduced margin */
+  padding: 2px 5px; 
+  border-radius: 3px; /* Smaller radius */
+  font-size: 0.7em; 
   font-weight: bold;
   vertical-align: middle;
   text-transform: uppercase;
@@ -156,22 +340,240 @@ body.dark .table-brand tr:nth-child(odd) {
 .tag.chá         { background-color: var(--tag-cha); }
 .tag.gotas       { background-color: #bbdefb; }
 
+.quantity-input {
+  width: 60px; 
+  padding: 8px; /* Good padding for touch */
+  text-align: center;
+  border: 1px solid var(--input-border-light);
+  border-radius: 4px;
+  background-color: var(--input-bg-light);
+  color: var(--text-light);
+  -moz-appearance: textfield; /* Firefox - hide spinners */
+}
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none; /* Safari and Chrome - hide spinners */
+  margin: 0;
+}
+
+body.dark .quantity-input {
+  background-color: var(--input-bg-dark);
+  color: var(--text-dark);
+  border-color: var(--input-border-dark);
+}
+
+.category-header > th, .table-brand .category-header { 
+    background-color: #f0f0f0; 
+    font-weight: bold;
+    text-align: center;
+    font-size: 0.85em;
+}
+body.dark .category-header > th, body.dark .table-brand .category-header {
+    background-color: #282828;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 768px) {
+  body {
+    padding: 20px; /* Restore padding */
+    font-size: 16px; /* Restore base font size */
+  }
+  .page-header {
+    margin-bottom: 20px;
+  }
+  .page-banner {
+    padding: 20px 0;
+  }
+  .header-buttons {
+    flex-wrap: nowrap; /* No wrap for header buttons */
+  }
+  .header-buttons button {
+    flex-grow: 0; /* Buttons don't grow */
+  }
+  .filter-controls {
+    flex-direction: row; /* Filters back to horizontal layout */
+    flex-wrap: wrap; /* Allow wrapping for filter groups */
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  .filter-group {
+    flex-basis: auto; /* Allow filter groups to size based on content */
+    min-width: 150px; /* Min width for filter groups */
+  }
+  .filter-group input[type="number"],
+  .filter-group select {
+    width: auto; /* Inputs size based on content or specific CSS */
+  }
+  .filter-buttons {
+    flex-direction: row; /* Buttons side-by-side */
+    width: auto; /* Buttons container auto width */
+    margin-top: auto; /* Align to bottom of filter row */
+  }
+  .filter-buttons button {
+    width: auto; /* Buttons auto width */
+  }
+  .order-simulation-area {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  .order-simulation-area button#btn-simulate-order {
+    width: auto; /* Simulate button auto width */
+    margin-bottom: 15px;
+  }
+  .order-summary {
+    padding-top: 15px;
+  }
+  .order-summary-table {
+    font-size: 1em; /* Restore font size */
+  }
+  .order-summary-table th, .order-summary-table td {
+    padding: 8px; /* Restore padding */
+  }
+  .table-brand {
+    font-size: 1em; /* Restore font size */
+    table-layout: fixed; /* Revert to fixed for desktop for consistent col widths */
+  }
+   .table-brand col:nth-child(1) { width: 50%; } 
+   .table-brand col:nth-child(2) { width: 15%; }
+   .table-brand col:nth-child(3) { width: 15%; }
+   .table-brand col:nth-child(4) { width: 20%; }
+  .table-brand th,
+  .table-brand td {
+    padding: 10px; /* Restore padding */
+  }
+   .table-brand .brand-banner img {
+    height: 40px; /* Restore logo size */
+  }
+  .category-header > th, .table-brand .category-header {
+    font-size: 0.9em; /* Restore font size */
+  }
+   .quantity-input {
+    width: 70px; 
+  }
+}
+
+
+/* Print-specific styles */
 @media print {
   body {
     padding: 0;
+    background: #fff !important; 
+    color: #000 !important; 
+    font-size: 10pt; /* Base font size for print */
   }
   .page-header,
-  footer {
-    display: none;
+  footer,
+  .filter-controls,
+  .order-simulation-area button#btn-simulate-order, 
+  .header-buttons button#btn-theme,
+  #btn-export.hide-on-print /* Class to hide export button if needed */
+   {
+    display: none !important;
   }
+  
+  .table-container-scrollable { /* Remove scroll for print */
+      overflow-x: visible;
+  }
+
   .table-brand {
     page-break-inside: avoid;
+    border: 1px solid #ccc !important; 
+    font-size: 9pt; /* Smaller font for tables in print */
+    min-width: auto !important; /* Remove min-width for print */
+    table-layout: auto !important; /* Auto layout for print to fit content */
+  }
+  .table-brand th, .table-brand td {
+    border: 1px solid #ccc !important;
+    padding: 4px !important; /* Reduced padding for print */
+    word-wrap: break-word;
+  }
+  .table-brand th {
+    background-color: #eee !important;
+  }
+   .table-brand tr:nth-child(even) {
+    background-color: #f9f9f9 !important;
+  }
+  .table-brand tr:nth-child(odd) {
+    background-color: #fff !important;
+  }
+  .quantity-input { /* Make quantity visible if printing filled form */
+      border: none; 
+      background: transparent;
+      text-align: right;
+      width: auto;
+  }
+
+
+  .order-summary { 
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    box-shadow: none;
+  }
+  .order-summary-table-container { /* Remove scroll for print */
+      overflow-x: visible;
+  }
+  .order-summary-table {
+    font-size: 9pt; 
+    min-width: auto !important; /* Remove min-width for print */
+  }
+  .order-summary-table th, .order-summary-table td {
+    padding: 4px !important; /* Reduced padding for print */
+  }
+  body, .page-banner, .table-brand .brand-banner, .table-brand th, .table-brand tr, .tag {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 }
 
-/* Forçar impressão de cores de fundo e imagens */
-body, .page-banner, .table-brand th, .table-brand tr {
-  -webkit-print-color-adjust: exact !important;
-  print-color-adjust: exact !important;
+/* Styles for when PDF export of quote is active (using html2pdf.js) */
+body.pdf-export-active .page-header,
+body.pdf-export-active footer,
+body.pdf-export-active .filter-controls,
+body.pdf-export-active .order-simulation-area button#btn-simulate-order,
+body.pdf-export-active #tabela-container, 
+body.pdf-export-active .header-buttons,
+body.pdf-export-active .table-container-scrollable /* Hide scroll container too */
+ {
+  display: none !important;
 }
 
+body.pdf-export-active #order-simulation-summary {
+  display: block !important; 
+  margin: 0;
+  padding: 10px; /* Padding for the PDF content */
+  box-shadow: none;
+  border: none;
+}
+body.pdf-export-active { 
+    padding: 0;
+    margin: 0;
+    background-color: #fff !important; 
+    font-size: 10pt; /* Consistent font size for PDF */
+}
+body.pdf-export-active .order-summary-table-container {
+    overflow-x: visible; /* No scroll in PDF */
+}
+body.pdf-export-active .order-summary-table {
+    min-width: auto !important; /* Ensure it doesn't try to be too wide */
+}
+
+
+/* Ensure dark mode styles are overridden for PDF export if active */
+body.dark.pdf-export-active, 
+body.dark.pdf-export-active #order-simulation-summary,
+body.dark.pdf-export-active .order-summary-table th,
+body.dark.pdf-export-active .order-summary-table td {
+    background-color: #fff !important;
+    color: #000 !important;
+    border-color: #ccc !important;
+}
+body.dark.pdf-export-active .order-summary-table th {
+    background-color: #f2f2f2 !important; 
+}
+
+/* Additions to wrap tables in scrollable containers in JS:
+   Each .table-brand should be wrapped in a .table-container-scrollable div.
+   The .order-summary-table should be wrapped in .order-summary-table-container div.
+   This will be done in script.js where these tables are created/rendered.
+*/
