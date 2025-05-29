@@ -510,23 +510,23 @@ body.pdf-export-active {
 }
 body.pdf-export-active #order-simulation-summary { 
   display: block !important; 
-  margin: 20mm 10mm 20mm 10mm !important; /* Simulate A4 page margins for content block */
-  padding: 0 !important; /* Padding is within the content elements */
+  margin: 0 !important; /* Margins controlled by html2pdf.js options */
+  padding: 20px !important; /* Internal padding for the content block */
   box-shadow: none !important; 
-  border: none !important; 
+  border: 1px solid #ccc !important; /* Optional border for the content block */
   background-color: #fff !important;
 }
-body.pdf-export-active .pdf-logo-placeholder img {
-  display: block;
-  margin: 0 auto 20px auto;
-  max-height: 50px; /* As set in JS */
+body.pdf-export-active .pdf-logo-placeholder img.pdf-quote-logo { /* More specific selector */
+  display: block !important;
+  margin: 0 auto 20px auto !important;
+  max-height: 60px !important; /* Increased from 50px */
 }
 body.pdf-export-active .quote-title {
-  text-align: center;
-  font-size: 1.6em; /* Larger for PDF title */
-  font-weight: bold;
-  color: #111111;
-  margin-bottom: 1.5em;
+  text-align: center !important;
+  font-size: 22px !important; /* Increased size */
+  font-weight: bold !important;
+  color: #000000 !important; /* Black title */
+  margin-bottom: 25px !important;
 }
 body.pdf-export-active .order-summary-table-container { 
   overflow-x: visible !important; 
@@ -534,46 +534,46 @@ body.pdf-export-active .order-summary-table-container {
 body.pdf-export-active .order-summary-table { 
   width: 100% !important;
   min-width: auto !important; 
-  font-size: 0.9em; /* Base font for table in PDF */
+  font-size: 11px !important; /* Slightly smaller for more content */
   border-collapse: collapse !important;
 }
 body.pdf-export-active .order-summary-table th,
 body.pdf-export-active .order-summary-table td {
-  border: 1px solid #cccccc !important; /* Slightly lighter border for PDF table */
-  padding: 8px 10px !important; /* Consistent padding */
+  border: 1px solid #bfbfbf !important; /* Darker border for PDF table */
+  padding: 8px !important; 
   text-align: left !important;
-  color: #333333 !important; /* Dark text for PDF table content */
+  color: #333333 !important; 
 }
 body.pdf-export-active .order-summary-table th {
-  background-color: #f0f0f0 !important; /* Light gray header for PDF table */
+  background-color: #e0e0e0 !important; /* Darker gray header for PDF table */
   font-weight: bold !important;
-  color: #111111 !important; /* Darker text for PDF table headers */
+  color: #000000 !important; 
 }
-body.pdf-export-active .order-summary-table tbody tr.product-data-row:nth-child(even) {
-  background-color: #f9f9f9 !important; /* Subtle zebra striping for PDF */
+body.pdf-export-active .order-summary-table tbody tr:nth-child(even) {
+  background-color: #f7f7f7 !important; /* Slightly different zebra for PDF */
 }
-body.pdf-export-active .order-summary-table tbody tr.product-data-row:nth-child(odd) {
+body.pdf-export-active .order-summary-table tbody tr:nth-child(odd) {
   background-color: #ffffff !important;
 }
 body.pdf-export-active .order-summary-table tfoot td,
-body.pdf-export-active .order-summary-table .grand-total-cell { /* Target specific cell if needed */
-  font-size: 1.1em !important;
+body.pdf-export-active .order-summary-table .grand-total-cell { 
+  font-size: 13px !important; 
   font-weight: bold !important;
   text-align: right !important;
-  color: #111111 !important;
-  background-color: #f0f0f0 !important; /* Light gray for totals row */
+  color: #000000 !important;
+  background-color: #e0e0e0 !important; 
 }
 body.pdf-export-active .order-summary-table tfoot td:first-child {
-    text-align: right !important; /* Ensure "Total Geral:" is right aligned if it's in first cell of tfoot row */
+    text-align: right !important; 
 }
 
 body.pdf-export-active .pdf-quote-footer {
-  text-align: center;
-  font-size: 0.8em;
-  color: #666666;
-  margin-top: 25px;
-  border-top: 1px solid #dddddd;
-  padding-top: 10px;
+  text-align: center !important;
+  font-size: 9px !important;
+  color: #555555 !important;
+  margin-top: 30px !important;
+  border-top: 1px solid #cccccc !important;
+  padding-top: 10px !important;
 }
 
 /* Hide all other elements when PDF export is active */
@@ -591,19 +591,19 @@ body.dark.pdf-export-active .order-summary-table tr.product-data-row {
     border-color: #dee2e6 !important; 
 } 
 body.dark.pdf-export-active .order-summary-table th { 
-    background-color: #f0f0f0 !important; /* Match light theme PDF header */
+    background-color: #f0f0f0 !important; 
 }
 body.dark.pdf-export-active .order-summary-table tbody tr.product-data-row:nth-child(even) {
-    background-color: #f9f9f9 !important; /* Match light theme PDF zebra */
+    background-color: #f9f9f9 !important; 
 }
 body.dark.pdf-export-active .order-summary-table tfoot td,
 body.dark.pdf-export-active .order-summary-table .grand-total-cell {
-    background-color: #f0f0f0 !important; /* Match light theme PDF totals row */
+    background-color: #f0f0f0 !important; 
     color: #111111 !important;
 }
 body.dark.pdf-export-active .quote-title,
 body.dark.pdf-export-active .pdf-quote-footer {
-    color: #111111 !important; /* Ensure titles and footers are dark text */
+    color: #111111 !important; 
 }
 body.dark.pdf-export-active .pdf-quote-footer p {
     color: #666666 !important;
