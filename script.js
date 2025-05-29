@@ -1,6 +1,7 @@
 // script.js
 document.addEventListener('DOMContentLoaded', () => {
   let orderInterfaceActive = false; 
+  let currentSimulatedItems = []; 
 
   let tableData = [ 
     {
@@ -98,15 +99,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const definedCategories = [
     "Cápsulas", "Extratos Líquidos (gotas)", "Chás Medicinais", "Novidades",
-    "Último Lote", "Promoções", "Óleos", "Pós", "Gomas", "Cartelas", "Blends", "Outros"
+    "Último Lote", "Promoções", "Populares", "Óleos", "Pós", "Gomas", "Cartelas", "Blends", "Outros"
   ];
   
   function assignCategory(item, forcePortuguese = false) {
-    if (item.category && !forcePortuguese && definedCategories.includes(item.category)) return item.category; 
+    // If a category is already assigned and valid (and not forcing), use it.
+    if (item.category && !forcePortuguese && definedCategories.includes(item.category)) {
+        // Specific check for "Populares" to ensure it's not overridden by keyword logic below
+        // if it was pre-assigned from tableData.
+        if (item.category === "Populares") return "Populares";
+    }
+    
     const descLower = item.desc.toLowerCase();
     if (item.tag === 'novo') return "Novidades";
     if (item.tag === 'ultimo-lote') return "Último Lote";
     if (item.tag === 'chá') return "Chás Medicinais";
+
+    // Use pre-assigned category if it's valid and we are in the initial data setup (forcePortuguese=true)
+    // OR if it's "Populares" (to preserve manual assignment)
+    if (item.category && definedCategories.includes(item.category) && (forcePortuguese || item.category === "Populares")) {
+        return item.category;
+    }
+    
+    // Fallback for pre-assigned English categories during initial forcePortuguese pass
+    // or if category was English and needs re-mapping, and not "Populares"
+    if (forcePortuguese && item.category && item.category !== "Populares") { 
+        const map = { "Capsules": "Cápsulas", "Liquid extracts (drops)": "Extratos Líquidos (gotas)", "Herbal teas": "Chás Medicinais", "New arrivals": "Novidades", "Last batch": "Último Lote", "Promotions": "Promoções", "Oils": "Óleos", "Powders": "Pós", "Gummies": "Gomas", "Blister packs": "Cartelas"};
+        if (map[item.category]) return map[item.category];
+    }
+
+    // Keyword-based assignment if not "Populares" or other specific pre-assignment
     if (descLower.includes('gummy') || descLower.includes('gomas')) return "Gomas";
     if (descLower.includes('blister')) return "Cartelas";
     if ((descLower.includes('caps') || descLower.includes('cap')) && !descLower.includes('softgel')) return "Cápsulas";
@@ -114,13 +136,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (descLower.includes('óleo') || descLower.includes('oleo') || descLower.includes('softgel')) return "Óleos";
     if ((/\d+g\s|\d+kg\s|pó/.test(descLower)) && !descLower.includes('caps') && !descLower.includes('softgel') && !descLower.includes('gomas')) return "Pós";
     if (descLower.includes('blend')) return "Blends";
-    if (forcePortuguese && item.category) { 
-        const map = { "Capsules": "Cápsulas", "Liquid extracts (drops)": "Extratos Líquidos (gotas)", "Herbal teas": "Chás Medicinais", "New arrivals": "Novidades", "Last batch": "Último Lote", "Promotions": "Promoções", "Oils": "Óleos", "Powders": "Pós", "Gummies": "Gomas", "Blister packs": "Cartelas"};
-        if (map[item.category]) return map[item.category];
-    }
+    
     return "Outros";
   }
   
+  // Re-process originalTableData to ensure all categories are correctly mapped after definedCategories update
   originalTableData.forEach(brandData => {
     brandData.items.forEach(item => {
       item.category = assignCategory(item); 
@@ -137,35 +157,49 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnExportEl = document.getElementById('btn-export');
   const btnThemeEl = document.getElementById('btn-theme');
   const btnSimulateOrderEl = document.getElementById('btn-simulate-order');
-  const floatingTotalEl = document.getElementById('floating-order-total'); // Get floating total element
+  const floatingTotalEl = document.getElementById('floating-order-total'); 
 
   function populateCategoryFilter() {
-    const allSelectCategories = new Set(); 
+    const categoriesFromData = new Set();
     originalTableData.forEach(brand => {
-      brand.items.forEach(item => allSelectCategories.add(item.category)); 
+        brand.items.forEach(item => {
+            if (item.category) categoriesFromData.add(item.category);
+        });
     });
+
+    // Combine definedCategories with categories found in data, ensuring defined order and uniqueness
+    const allDisplayCategories = [];
+    definedCategories.forEach(definedCat => {
+        if (categoriesFromData.has(definedCat) || definedCat === "Populares") { // Always include "Populares" if defined
+            allDisplayCategories.push(definedCat);
+            categoriesFromData.delete(definedCat); // Remove to avoid duplication
+        }
+    });
+    // Add any remaining categories from data that weren't in definedCategories (e.g., "Outros" if not explicitly first/last)
+    categoriesFromData.forEach(cat => allDisplayCategories.push(cat));
+
+
     categoryFilterEl.innerHTML = ''; 
     const allOption = document.createElement('option');
     allOption.value = 'all';
     allOption.textContent = 'Todas as Categorias'; 
     categoryFilterEl.appendChild(allOption);
-    const sortedCategories = Array.from(allSelectCategories).sort((a, b) => {
-        if (a === "Outros") return 1; 
-        if (b === "Outros") return -1;
-        return a.localeCompare(b);
-    });
-    sortedCategories.forEach(categoryText => {
-      const option = document.createElement('option');
-      option.value = categoryText;
-      option.textContent = categoryText;
-      categoryFilterEl.appendChild(option);
+
+    allDisplayCategories.forEach(categoryText => {
+        if (categoryText === "Outros" && !originalTableData.some(brand => brand.items.some(item => item.category === "Outros"))) {
+            // Do not add "Outros" if no items actually belong to it and it's not "Populares" (which we always want)
+            // This check might be redundant if allDisplayCategories is built correctly from data.
+        } else {
+            const option = document.createElement('option');
+            option.value = categoryText;
+            option.textContent = categoryText;
+            categoryFilterEl.appendChild(option);
+        }
     });
   }
 
   function renderTables(dataToRender) {
-    // Use classList.toggle for cleaner add/remove based on boolean
     document.body.classList.toggle('order-interface-visible', orderInterfaceActive);
-
     tabelaContainer.innerHTML = ''; 
     dataToRender.forEach((brandData) => { 
       if (brandData.items.length === 0) return; 
@@ -182,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const qtyCol = document.createElement('col');
       colgroup.appendChild(qtyCol);
       tbl.appendChild(colgroup);
-
       const bannerRow = document.createElement('tr');
       const bannerCell = document.createElement('th');
       bannerCell.colSpan = 4; 
@@ -231,7 +264,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const tdBox = document.createElement('td');
             tdBox.textContent = `R$ ${(item.unit * 12).toFixed(2)}`;
             tr.appendChild(tdBox);
-            
             const tdQty = document.createElement('td');
             tdQty.className = 'quantity-column-cell'; 
             const qtyControlDiv = document.createElement('div');
@@ -320,20 +352,18 @@ document.addEventListener('DOMContentLoaded', () => {
       if(orderInterfaceActive) {
         const currentGrandTotal = calculateCurrentGrandTotal();
         updateFloatingTotal(currentGrandTotal);
-        // To keep main summary also in sync, or rely on "Atualizar Pedido" button
-        // For now, only floating total is real-time on +/- clicks. Main summary on "Atualizar Pedido".
       }
     }
   });
 
   function simulateOrder() {
-    const selectedItems = [];
+    currentSimulatedItems = []; 
     let grandTotal = 0;
     originalTableData.forEach(brand => {
       brand.items.forEach(item => {
         if (item.quantity > 0) {
           const itemTotal = item.unit * item.quantity;
-          selectedItems.push({
+          currentSimulatedItems.push({ 
             desc: item.desc,
             unitPrice: item.unit,
             quantity: item.quantity, 
@@ -344,12 +374,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    updateFloatingTotal(grandTotal); // Update floating total as well
+    updateFloatingTotal(grandTotal); 
 
     orderSimulationSummaryEl.innerHTML = ''; 
-    if (selectedItems.length > 0) {
+    if (currentSimulatedItems.length > 0) {
       let summaryHTML = '<h3>Resumo do Pedido</h3><div class="order-summary-table-container"><table class="order-summary-table"><thead><tr><th>Produto</th><th>Preço Unit.</th><th>Qtde.</th><th>Total Item</th></tr></thead><tbody>';
-      selectedItems.forEach(item => {
+      currentSimulatedItems.forEach(item => {
         summaryHTML += `<tr class="product-data-row">
           <td>${item.desc}</td>
           <td>R$ ${item.unitPrice.toFixed(2)}</td>
@@ -359,12 +389,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       summaryHTML += `</tbody><tfoot><tr><td colspan="3" style="text-align:right;"><strong>Total Geral:</strong></td><td><strong>R$ ${grandTotal.toFixed(2)}</strong></td></tr></tfoot></table></div>`;
       orderSimulationSummaryEl.innerHTML = summaryHTML;
-      btnExportEl.textContent = 'Exportar Cotação PDF'; 
-      btnExportEl.classList.remove('hide-on-print'); 
+      if (orderInterfaceActive) { 
+          btnExportEl.textContent = 'Exportar Cotação PDF';
+      }
     } else {
       orderSimulationSummaryEl.innerHTML = '<p>Por favor, insira quantidades nos produtos para simular um pedido.</p>'; 
       btnExportEl.textContent = 'Exportar Catálogo PDF'; 
-      btnExportEl.classList.add('hide-on-print'); 
     }
   }
   
@@ -412,6 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
         item.quantity = 0;
       });
     });
+    currentSimulatedItems = []; 
 
     if (orderInterfaceActive) {
         orderInterfaceActive = false;
@@ -419,19 +450,18 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSimulateOrderEl.textContent = 'Simular Pedido';
         orderSimulationSummaryEl.innerHTML = ''; 
     }
-    updateFloatingTotal(0); // Reset floating total
+    updateFloatingTotal(0); 
     renderTables(originalTableData); 
     btnExportEl.textContent = 'Exportar Catálogo PDF'; 
-    btnExportEl.classList.remove('hide-on-print'); 
   }
   
   document.getElementById('btn-apply-filters').addEventListener('click', filterData);
   document.getElementById('btn-reset-filters').addEventListener('click', resetFilters);
   
   btnExportEl.addEventListener('click', () => {
-    const isQuoteActive = orderInterfaceActive && orderSimulationSummaryEl.innerHTML !== '' && !orderSimulationSummaryEl.querySelector('p');
+    const shouldExportQuote = orderInterfaceActive && currentSimulatedItems.length > 0;
 
-    if (isQuoteActive) {
+    if (shouldExportQuote) {
         document.body.classList.add('pdf-export-active'); 
         const element = orderSimulationSummaryEl;
         const opt = {
@@ -447,10 +477,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("PDF generation error:", err);
             document.body.classList.remove('pdf-export-active');
         });
-    } else {
-        btnExportEl.classList.add('hide-on-print'); 
+    } else { 
+        btnExportEl.classList.add('hide-on-print-temp'); 
         window.print(); 
-        setTimeout(() => btnExportEl.classList.remove('hide-on-print'), 2000); 
+        setTimeout(() => btnExportEl.classList.remove('hide-on-print-temp'), 1000); 
     }
   });
 
@@ -468,6 +498,6 @@ document.addEventListener('DOMContentLoaded', () => {
   populateCategoryFilter(); 
   renderTables(originalTableData); 
   btnThemeEl.textContent = document.body.classList.contains('dark') ? 'Tema Claro' : 'Tema Escuro'; 
-  btnExportEl.classList.add('hide-on-print'); 
-  updateFloatingTotal(0); // Initialize floating total text
+  btnExportEl.textContent = 'Exportar Catálogo PDF'; 
+  updateFloatingTotal(0); 
 });

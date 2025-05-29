@@ -16,37 +16,38 @@
   
   /* Backgrounds & Text - Light Theme */
   --bg-light: #f8f9fa; 
-  --text-light: #212529; 
+  --text-light: #212529; /* Default text color for light theme */
   --surface-bg-light: #ffffff; 
   --row-base: #ffffff;
   --row-alt: #f1f3f5; 
-  --row-hover-bg-light: #e9ecef; /* For table row hover */
+  --row-hover-bg-light: #e9ecef; 
   --color-light-gray: #e9ecef; 
   --category-header-bg-light: #e9ecef; 
 
   /* Backgrounds & Text - Dark Theme */
   --bg-dark: #1a1d20; 
-  --text-dark: #e9ecef; 
+  --text-dark: #e9ecef; /* Default text color for dark theme */
   --surface-bg-dark: #23272b; 
   --row-base-dark: #23272b; 
   --row-alt-dark: #2c3034;  
-  --row-hover-bg-dark: #343a40; /* For table row hover in dark */
+  --row-hover-bg-dark: #343a40; 
   --color-dark-gray: #343a40; 
   --category-header-bg-dark: #343a40;
 
   /* Tags */
   --tag-cha: #a5d6a7;
-  --tag-text: #1f1f1f; 
+  --tag-text-light: #1f1f1f; /* Specific for light theme tags */
+  --tag-text-dark: #e0e0e0;   /* Specific for dark theme tags */
 
   /* Inputs */
-  --input-bg: var(--surface-bg-light);
-  --input-text: #495057;
+  --input-bg: var(--surface-bg-light); /* Will be overridden in body.dark */
+  --input-text: #495057; /* Specific for light theme inputs */
   --input-border: #ced4da;
   --input-focus-border: #86b7fe; 
   --input-focus-shadow: rgba(13, 110, 253, 0.25);
 
   --input-bg-dark: #2b3035;
-  --input-text-dark: #e9ecef;
+  --input-text-dark: #e9ecef; /* Specific for dark theme inputs */
   --input-border-dark: #50565e;
   --input-focus-border-dark: #78a3ff;
   --input-focus-shadow-dark: rgba(25, 135, 255, 0.25);
@@ -64,12 +65,12 @@
   --button-focus-shadow-size: .2rem;
 
   /* Floating Total */
-  --floating-total-bg: var(--surface-bg-light);
-  --floating-total-text: var(--text-light);
+  --floating-total-bg: var(--surface-bg-light); /* Will be overridden in body.dark */
+  --floating-total-text: var(--text-light); /* Uses general text color */
   --floating-total-border: var(--color-light-gray);
   --floating-total-shadow: 0 6px 12px rgba(0,0,0,0.15);
   --floating-total-bg-dark: #2a2d30; 
-  --floating-total-text-dark: var(--text-dark);
+  --floating-total-text-dark: var(--text-dark); /* Uses general dark text color */
   --floating-total-border-dark: #45494f;
 }
 
@@ -79,8 +80,8 @@ body {
   flex-direction: column;
   min-height: 100vh;
   background: var(--bg-light);
-  color: var(--text-light);
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; /* More specific */
+  color: var(--text-light); /* Default text color for the body */
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; 
   font-family: var(--font-family-base);
   font-size: 15px; 
   padding-bottom: 80px; 
@@ -88,21 +89,31 @@ body {
 
 body.dark {
   background: var(--bg-dark);
-  color: var(--text-dark);
+  color: var(--text-dark); /* Default text color for dark mode */
+  
+  /* Remap general variables for dark mode */
+  --text-light: var(--text-dark); /* Primary Fix: general text becomes light */
+  --surface-bg-light: var(--surface-bg-dark);
   --row-base: var(--row-base-dark);
   --row-alt: var(--row-alt-dark);
-  --row-hover-bg-light: var(--row-hover-bg-dark); /* Remap hover for dark */
+  --row-hover-bg-light: var(--row-hover-bg-dark); 
   --category-header-bg-light: var(--category-header-bg-dark); 
+  --color-light-gray: var(--color-dark-gray);
+  
+  /* Remap input variables */
   --input-bg: var(--input-bg-dark);
   --input-text: var(--input-text-dark);
   --input-border: var(--input-border-dark);
   --input-focus-border: var(--input-focus-border-dark);
   --input-focus-shadow: var(--input-focus-shadow-dark);
+
+  /* Remap floating total variables */
   --floating-total-bg: var(--floating-total-bg-dark);
   --floating-total-text: var(--floating-total-text-dark);
   --floating-total-border: var(--floating-total-border-dark);
-  --surface-bg-light: var(--surface-bg-dark); 
-  --color-light-gray: var(--color-dark-gray);
+
+  /* Remap tag text color */
+  --tag-text-light: var(--tag-text-dark);
 }
 
 * {
@@ -154,12 +165,12 @@ button:focus-visible, .button:focus-visible {
 }
 .header-buttons button { 
   background-color: var(--color-secondary);
-  color: #fff;
+  color: #fff; /* Text on these buttons is explicitly white */
   min-width: 130px; 
 }
 body.dark .header-buttons button {
   background-color: var(--color-dark-gray);
-  color: var(--text-dark);
+  color: var(--text-dark); /* Ensure text is light on dark gray button */
 }
 .header-buttons button:hover {
   background-color: var(--color-secondary-hover);
@@ -188,7 +199,7 @@ body.dark .header-buttons button:hover {
 .filter-group label {
   font-size: 0.88em; 
   font-weight: 500;
-  color: var(--text-light);
+  color: var(--text-light); /* Uses themed text color */
 }
 
 .filter-group input[type="number"],
@@ -199,7 +210,7 @@ body.dark .header-buttons button:hover {
   border: 1px solid var(--input-border);
   border-radius: var(--input-border-radius);
   background-color: var(--input-bg);
-  color: var(--input-text);
+  color: var(--input-text); /* Uses themed input text color */
   width: 100%; 
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -216,10 +227,10 @@ body.dark .header-buttons button:hover {
   accent-color: var(--color-primary); 
   border: 1px solid var(--input-border); 
   vertical-align: middle;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; /* Added transition */
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; 
 }
 .filter-group input[type="checkbox"]:focus {
-  border-color: var(--input-focus-border); /* Simple focus for checkbox */
+  border-color: var(--input-focus-border); 
   box-shadow: 0 0 0 .1rem var(--input-focus-shadow);
 }
 .filter-group .checkbox-label { 
@@ -228,6 +239,7 @@ body.dark .header-buttons button:hover {
     align-items: center;
     cursor: pointer;
     vertical-align: middle;
+    color: var(--text-light); /* Uses themed text color */
 }
 
 .filter-buttons {
@@ -238,14 +250,14 @@ body.dark .header-buttons button:hover {
 }
 .filter-buttons button#btn-apply-filters {
   background-color: var(--color-primary);
-  color: #fff;
+  color: #fff; /* Explicit white text on primary button */
 }
 .filter-buttons button#btn-apply-filters:hover {
   background-color: var(--color-primary-hover);
 }
 .filter-buttons button#btn-reset-filters {
   background-color: transparent;
-  color: var(--color-secondary);
+  color: var(--color-secondary); /* Themed secondary color for text */
   border: 1px solid var(--color-secondary);
 }
 .filter-buttons button#btn-reset-filters:hover {
@@ -253,7 +265,7 @@ body.dark .header-buttons button:hover {
   color: #fff;
 }
 body.dark .filter-buttons button#btn-reset-filters {
-  color: var(--text-dark);
+  color: var(--text-dark); /* Uses themed text color for dark outline button */
   border-color: var(--input-border-dark); 
 }
 body.dark .filter-buttons button#btn-reset-filters:hover {
@@ -272,7 +284,7 @@ body.dark .filter-buttons button#btn-reset-filters:hover {
 }
 .order-simulation-area button#btn-simulate-order {
   background-color: var(--color-success); 
-  color: white;
+  color: white; /* Explicit white text */
   width: 100%; 
   margin-bottom: 15px;
   padding: .65rem var(--button-padding-x); 
@@ -287,47 +299,40 @@ body.order-interface-visible #order-simulation-summary { display: block; }
 
 .order-summary-table-container { overflow-x: auto; }
 .order-summary-table { width: 100%; min-width: 400px; border-collapse: collapse; margin-top: 10px; font-size: 0.85em; }
-.order-summary-table th, .order-summary-table td { border: 1px solid var(--color-border-light); padding: 8px; text-align: left; } 
-body.dark .order-summary-table th, body.dark .order-summary-table td { border-color: var(--color-border-dark); }
+.order-summary-table th, .order-summary-table td { border: 1px solid var(--color-border-light); padding: 8px; text-align: left; color: var(--text-light); } 
 .order-summary-table th { background-color: var(--color-light-gray); font-weight: 600; }
-body.dark .order-summary-table th { background-color: var(--color-dark-gray); }
 .order-summary-table tfoot td { font-weight: bold; }
-.no-results-message { padding: 15px; text-align: center; font-style: italic; color: #777; }
-body.dark .no-results-message { color: #aaa; }
+.no-results-message { padding: 15px; text-align: center; font-style: italic; color: #777; } /* Specific color, check dark mode */
+body.dark .no-results-message { color: #aaa; } /* Already handled */
 main { flex: 1; }
 .table-container-scrollable { overflow-x: auto; margin-bottom: 15px; border: 1px solid var(--color-light-gray); border-radius: .3rem; }
-body.dark .table-container-scrollable { border-color: var(--color-border-dark); }
-footer p { text-align: center; margin-top: auto; padding: 20px 0; color: #6c757d; font-style: italic; font-size: 0.85em; }
-body.dark footer p { color: #adb5bd; }
+footer p { text-align: center; margin-top: auto; padding: 20px 0; color: #6c757d; font-style: italic; font-size: 0.85em; } 
+body.dark footer p { color: #adb5bd; } /* Specific footer color, seems fine */
 .table-brand { border-collapse: collapse; width: 100%; min-width: 600px; table-layout: auto; font-size: 0.9em; } 
 .table-brand col:nth-child(1) { width: 45%; } 
 .table-brand col:nth-child(2) { width: 15%; } 
 .table-brand col:nth-child(3) { width: 15%; } 
-.table-brand .brand-banner { display: flex; align-items: center; padding: 8px 10px; color: #fff; }
+.table-brand .brand-banner { display: flex; align-items: center; padding: 8px 10px; color: #fff; } /* Text on brand banner is white */
 .table-brand .brand-banner img { height: 35px; margin-right: 12px; }
-.table-brand th, .table-brand td { border: none; border-bottom: 1px solid var(--color-light-gray); padding: 8px 10px; text-align: left; word-wrap: break-word; vertical-align: middle; }
-body.dark .table-brand th, body.dark .table-brand td { border-bottom-color: var(--color-border-dark); }
+.table-brand th, .table-brand td { border: none; border-bottom: 1px solid var(--color-light-gray); padding: 8px 10px; text-align: left; word-wrap: break-word; vertical-align: middle; color: var(--text-light); }
 .table-brand tr:last-child td { border-bottom: none; } 
-.table-brand thead th { background: var(--surface-bg-light); text-transform: uppercase; font-size: 0.75em; font-weight: 600; border-bottom: 2px solid var(--color-light-gray); }
-body.dark .table-brand thead th { background: var(--surface-bg-dark); border-bottom-color: var(--color-border-dark); }
+.table-brand thead th { background: var(--surface-bg-light); text-transform: uppercase; font-size: 0.75em; font-weight: 600; border-bottom: 2px solid var(--color-light-gray); color: var(--text-light); }
 
 .table-brand tbody tr.product-data-row {
-  transition: background-color 0.1s ease-out; /* Added transition for row hover */
+  transition: background-color 0.1s ease-out; 
 }
 .table-brand tbody tr.product-data-row:nth-child(odd) { background-color: var(--row-base); }
 .table-brand tbody tr.product-data-row:nth-child(even) { background-color: var(--row-alt); }
 .table-brand tbody tr.product-data-row:hover {
-  background-color: var(--row-hover-bg-light); /* Uses remapped variable in dark mode */
+  background-color: var(--row-hover-bg-light); 
 }
 
-.tag { display: inline-block; margin-left: 8px; padding: 3px 7px; border-radius: var(--button-border-radius); font-size: 0.75em; font-weight: 500; vertical-align: middle; text-transform: uppercase; color: var(--tag-text); }
+.tag { display: inline-block; margin-left: 8px; padding: 3px 7px; border-radius: var(--button-border-radius); font-size: 0.75em; font-weight: 500; vertical-align: middle; text-transform: uppercase; color: var(--tag-text-light); } /* Uses specific tag text color */
 .tag.novo { background-color: #c8e6c9; } .tag.ultimo-lote { background-color: #ffe0b2; } .tag.chá { background-color: var(--tag-cha); } .tag.gotas { background-color: #bbdefb; }
 .quantity-control { display: flex; align-items: center; justify-content: center; gap: 6px; }
 .quantity-btn { background-color: var(--color-light-gray); color: var(--text-light); border: 1px solid var(--input-border); border-radius: var(--button-border-radius); padding: 4px 8px; cursor: pointer; font-size: 1em; line-height: 1; min-width: 32px; height: 32px; }
-body.dark .quantity-btn { background-color: var(--color-dark-gray); color: var(--text-dark); border-color: var(--input-border-dark); }
-.quantity-display { min-width: 35px; padding: 4px 6px; text-align: center; font-weight: 500; border: 1px solid transparent; display: inline-block; vertical-align: middle; }
-.category-header { background-color: var(--category-header-bg-light) !important; font-weight: 600; text-align: center !important; font-size: 0.9em; padding: 8px 10px !important; border-bottom: 1px solid var(--color-light-gray) !important;}
-body.dark .category-header { background-color: var(--category-header-bg-dark) !important; border-bottom-color: var(--color-border-dark) !important; }
+.quantity-display { min-width: 35px; padding: 4px 6px; text-align: center; font-weight: 500; border: 1px solid transparent; display: inline-block; vertical-align: middle; color: var(--text-light); }
+.category-header { background-color: var(--category-header-bg-light) !important; font-weight: 600; text-align: center !important; font-size: 0.9em; padding: 8px 10px !important; border-bottom: 1px solid var(--color-light-gray) !important; color: var(--text-light); }
 .category-header > th { background-color: inherit !important; color: inherit !important; border: none !important; }
 .quantity-column-header, .quantity-column-cell { display: none; }
 body.order-interface-visible .quantity-column-header, body.order-interface-visible .quantity-column-cell { display: table-cell; }
@@ -366,7 +371,9 @@ body.order-interface-visible #floating-order-total { display: block; opacity: 1;
 
 @media print { 
   body { padding: 0; background: #fff !important; color: #000 !important; font-size: 10pt; }
-  #floating-order-total, .page-header, footer, .filter-controls, .order-simulation-area button#btn-simulate-order, .header-buttons button#btn-theme, #btn-export.hide-on-print { display: none !important; }
+  #floating-order-total, .page-header, footer, .filter-controls, .order-simulation-area button#btn-simulate-order, .header-buttons button#btn-theme, 
+  #btn-export.hide-on-print, #btn-export.hide-on-print-temp 
+   { display: none !important; }
   .table-container-scrollable { overflow-x: visible; border:none; }
   .table-brand { page-break-inside: avoid; border: 1px solid #dee2e6 !important; font-size: 9pt; min-width: auto !important; table-layout: auto !important; }
   .table-brand th, .table-brand td { border: none !important; border-bottom: 1px solid #dee2e6 !important; padding: 5px !important; word-wrap: break-word; }
@@ -396,3 +403,5 @@ body.dark.pdf-export-active, body.dark.pdf-export-active #order-simulation-summa
 body.dark.pdf-export-active .order-summary-table th { background-color: #f8f9fa !important; }
 body.dark.pdf-export-active .order-summary-table tr.product-data-row:nth-child(odd) { background-color: #fff !important; }
 body.dark.pdf-export-active .order-summary-table tr.product-data-row:nth-child(even) { background-color: #f8f9fa !important; }
+
+[end of styles.css]
