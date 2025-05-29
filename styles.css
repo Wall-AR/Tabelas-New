@@ -16,7 +16,7 @@
   
   /* Backgrounds & Text - Light Theme */
   --bg-light: #f8f9fa; 
-  --text-light: #212529; /* Default text color for light theme */
+  --text-light: #212529; 
   --surface-bg-light: #ffffff; 
   --row-base: #ffffff;
   --row-alt: #f1f3f5; 
@@ -26,7 +26,7 @@
 
   /* Backgrounds & Text - Dark Theme */
   --bg-dark: #1a1d20; 
-  --text-dark: #e9ecef; /* Default text color for dark theme */
+  --text-dark: #e9ecef; 
   --surface-bg-dark: #23272b; 
   --row-base-dark: #23272b; 
   --row-alt-dark: #2c3034;  
@@ -36,18 +36,17 @@
 
   /* Tags */
   --tag-cha: #a5d6a7;
-  --tag-text-light: #1f1f1f; /* Specific for light theme tags */
-  --tag-text-dark: #e0e0e0;   /* Specific for dark theme tags */
+  --tag-text: #1f1f1f; 
 
   /* Inputs */
-  --input-bg: var(--surface-bg-light); /* Will be overridden in body.dark */
-  --input-text: #495057; /* Specific for light theme inputs */
+  --input-bg: var(--surface-bg-light);
+  --input-text: #495057; 
   --input-border: #ced4da;
   --input-focus-border: #86b7fe; 
   --input-focus-shadow: rgba(13, 110, 253, 0.25);
 
   --input-bg-dark: #2b3035;
-  --input-text-dark: #e9ecef; /* Specific for dark theme inputs */
+  --input-text-dark: #e9ecef; 
   --input-border-dark: #50565e;
   --input-focus-border-dark: #78a3ff;
   --input-focus-shadow-dark: rgba(25, 135, 255, 0.25);
@@ -65,12 +64,12 @@
   --button-focus-shadow-size: .2rem;
 
   /* Floating Total */
-  --floating-total-bg: var(--surface-bg-light); /* Will be overridden in body.dark */
-  --floating-total-text: var(--text-light); /* Uses general text color */
+  --floating-total-bg: var(--surface-bg-light);
+  --floating-total-text: var(--text-light); 
   --floating-total-border: var(--color-light-gray);
   --floating-total-shadow: 0 6px 12px rgba(0,0,0,0.15);
   --floating-total-bg-dark: #2a2d30; 
-  --floating-total-text-dark: var(--text-dark); /* Uses general dark text color */
+  --floating-total-text-dark: var(--text-dark); 
   --floating-total-border-dark: #45494f;
 }
 
@@ -80,7 +79,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
   background: var(--bg-light);
-  color: var(--text-light); /* Default text color for the body */
+  color: var(--text-light); 
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; 
   font-family: var(--font-family-base);
   font-size: 15px; 
@@ -89,10 +88,9 @@ body {
 
 body.dark {
   background: var(--bg-dark);
-  color: var(--text-dark); /* Default text color for dark mode */
+  color: var(--text-dark); 
   
-  /* Remap general variables for dark mode */
-  --text-light: var(--text-dark); /* Primary Fix: general text becomes light */
+  --text-light: var(--text-dark); 
   --surface-bg-light: var(--surface-bg-dark);
   --row-base: var(--row-base-dark);
   --row-alt: var(--row-alt-dark);
@@ -100,20 +98,15 @@ body.dark {
   --category-header-bg-light: var(--category-header-bg-dark); 
   --color-light-gray: var(--color-dark-gray);
   
-  /* Remap input variables */
   --input-bg: var(--input-bg-dark);
   --input-text: var(--input-text-dark);
   --input-border: var(--input-border-dark);
   --input-focus-border: var(--input-focus-border-dark);
   --input-focus-shadow: var(--input-focus-shadow-dark);
 
-  /* Remap floating total variables */
   --floating-total-bg: var(--floating-total-bg-dark);
   --floating-total-text: var(--floating-total-text-dark);
   --floating-total-border: var(--floating-total-border-dark);
-
-  /* Remap tag text color */
-  --tag-text-light: var(--tag-text-dark);
 }
 
 * {
@@ -165,12 +158,12 @@ button:focus-visible, .button:focus-visible {
 }
 .header-buttons button { 
   background-color: var(--color-secondary);
-  color: #fff; /* Text on these buttons is explicitly white */
+  color: #fff; 
   min-width: 130px; 
 }
 body.dark .header-buttons button {
   background-color: var(--color-dark-gray);
-  color: var(--text-dark); /* Ensure text is light on dark gray button */
+  color: var(--text-dark); 
 }
 .header-buttons button:hover {
   background-color: var(--color-secondary-hover);
@@ -199,7 +192,7 @@ body.dark .header-buttons button:hover {
 .filter-group label {
   font-size: 0.88em; 
   font-weight: 500;
-  color: var(--text-light); /* Uses themed text color */
+  color: var(--text-light); 
 }
 
 .filter-group input[type="number"],
@@ -210,7 +203,7 @@ body.dark .header-buttons button:hover {
   border: 1px solid var(--input-border);
   border-radius: var(--input-border-radius);
   background-color: var(--input-bg);
-  color: var(--input-text); /* Uses themed input text color */
+  color: var(--input-text); 
   width: 100%; 
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -239,7 +232,7 @@ body.dark .header-buttons button:hover {
     align-items: center;
     cursor: pointer;
     vertical-align: middle;
-    color: var(--text-light); /* Uses themed text color */
+    color: var(--text-light); 
 }
 
 .filter-buttons {
@@ -250,14 +243,14 @@ body.dark .header-buttons button:hover {
 }
 .filter-buttons button#btn-apply-filters {
   background-color: var(--color-primary);
-  color: #fff; /* Explicit white text on primary button */
+  color: #fff; 
 }
 .filter-buttons button#btn-apply-filters:hover {
   background-color: var(--color-primary-hover);
 }
 .filter-buttons button#btn-reset-filters {
   background-color: transparent;
-  color: var(--color-secondary); /* Themed secondary color for text */
+  color: var(--color-secondary); 
   border: 1px solid var(--color-secondary);
 }
 .filter-buttons button#btn-reset-filters:hover {
@@ -265,7 +258,7 @@ body.dark .header-buttons button:hover {
   color: #fff;
 }
 body.dark .filter-buttons button#btn-reset-filters {
-  color: var(--text-dark); /* Uses themed text color for dark outline button */
+  color: var(--text-dark); 
   border-color: var(--input-border-dark); 
 }
 body.dark .filter-buttons button#btn-reset-filters:hover {
@@ -284,7 +277,7 @@ body.dark .filter-buttons button#btn-reset-filters:hover {
 }
 .order-simulation-area button#btn-simulate-order {
   background-color: var(--color-success); 
-  color: white; /* Explicit white text */
+  color: white; 
   width: 100%; 
   margin-bottom: 15px;
   padding: .65rem var(--button-padding-x); 
@@ -302,17 +295,17 @@ body.order-interface-visible #order-simulation-summary { display: block; }
 .order-summary-table th, .order-summary-table td { border: 1px solid var(--color-border-light); padding: 8px; text-align: left; color: var(--text-light); } 
 .order-summary-table th { background-color: var(--color-light-gray); font-weight: 600; }
 .order-summary-table tfoot td { font-weight: bold; }
-.no-results-message { padding: 15px; text-align: center; font-style: italic; color: #777; } /* Specific color, check dark mode */
-body.dark .no-results-message { color: #aaa; } /* Already handled */
+.no-results-message { padding: 15px; text-align: center; font-style: italic; color: #777; } 
+body.dark .no-results-message { color: #aaa; } 
 main { flex: 1; }
 .table-container-scrollable { overflow-x: auto; margin-bottom: 15px; border: 1px solid var(--color-light-gray); border-radius: .3rem; }
 footer p { text-align: center; margin-top: auto; padding: 20px 0; color: #6c757d; font-style: italic; font-size: 0.85em; } 
-body.dark footer p { color: #adb5bd; } /* Specific footer color, seems fine */
+body.dark footer p { color: #adb5bd; } 
 .table-brand { border-collapse: collapse; width: 100%; min-width: 600px; table-layout: auto; font-size: 0.9em; } 
 .table-brand col:nth-child(1) { width: 45%; } 
 .table-brand col:nth-child(2) { width: 15%; } 
 .table-brand col:nth-child(3) { width: 15%; } 
-.table-brand .brand-banner { display: flex; align-items: center; padding: 8px 10px; color: #fff; } /* Text on brand banner is white */
+.table-brand .brand-banner { display: flex; align-items: center; padding: 8px 10px; color: #fff; } 
 .table-brand .brand-banner img { height: 35px; margin-right: 12px; }
 .table-brand th, .table-brand td { border: none; border-bottom: 1px solid var(--color-light-gray); padding: 8px 10px; text-align: left; word-wrap: break-word; vertical-align: middle; color: var(--text-light); }
 .table-brand tr:last-child td { border-bottom: none; } 
@@ -327,7 +320,7 @@ body.dark footer p { color: #adb5bd; } /* Specific footer color, seems fine */
   background-color: var(--row-hover-bg-light); 
 }
 
-.tag { display: inline-block; margin-left: 8px; padding: 3px 7px; border-radius: var(--button-border-radius); font-size: 0.75em; font-weight: 500; vertical-align: middle; text-transform: uppercase; color: var(--tag-text-light); } /* Uses specific tag text color */
+.tag { display: inline-block; margin-left: 8px; padding: 3px 7px; border-radius: var(--button-border-radius); font-size: 0.75em; font-weight: 500; vertical-align: middle; text-transform: uppercase; color: var(--tag-text); }
 .tag.novo { background-color: #c8e6c9; } .tag.ultimo-lote { background-color: #ffe0b2; } .tag.chá { background-color: var(--tag-cha); } .tag.gotas { background-color: #bbdefb; }
 .quantity-control { display: flex; align-items: center; justify-content: center; gap: 6px; }
 .quantity-btn { background-color: var(--color-light-gray); color: var(--text-light); border: 1px solid var(--input-border); border-radius: var(--button-border-radius); padding: 4px 8px; cursor: pointer; font-size: 1em; line-height: 1; min-width: 32px; height: 32px; }
@@ -370,28 +363,108 @@ body.order-interface-visible #floating-order-total { display: block; opacity: 1;
 }
 
 @media print { 
-  body { padding: 0; background: #fff !important; color: #000 !important; font-size: 10pt; }
-  #floating-order-total, .page-header, footer, .filter-controls, .order-simulation-area button#btn-simulate-order, .header-buttons button#btn-theme, 
+  body { 
+    padding: 0 !important; /* Ensure no padding on body for print */
+    background-color: #ffffff !important; 
+    color: #000000 !important; 
+    font-size: 10pt !important; 
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body.dark { /* Force light theme variables for printing when dark mode is active */
+    --bg-light: #ffffff !important;
+    --text-light: #000000 !important;
+    --surface-bg-light: #ffffff !important;
+    --row-base: #ffffff !important;
+    --row-alt: #f0f0f0 !important; /* Light zebra stripe for print */
+    --row-hover-bg-light: #ffffff !important; /* No hover in print */
+    --color-light-gray: #dddddd !important; /* Lighter gray for borders in print */
+    --category-header-bg-light: #f0f0f0 !important;
+    --input-bg: #ffffff !important;
+    --input-text: #000000 !important;
+    --input-border: #cccccc !important;
+    --tag-text: #000000 !important; /* Ensure tags have dark text */
+    
+    /* Override specific dark theme variables to light theme equivalents for print */
+    --bg-dark: #ffffff !important;
+    --text-dark: #000000 !important;
+    --surface-bg-dark: #ffffff !important;
+    --row-base-dark: #ffffff !important;
+    --row-alt-dark: #f0f0f0 !important;
+    --row-hover-bg-dark: #ffffff !important;
+    --color-dark-gray: #dddddd !important;
+    --category-header-bg-dark: #f0f0f0 !important;
+    --input-bg-dark: #ffffff !important;
+    --input-text-dark: #000000 !important;
+    --input-border-dark: #cccccc !important;
+    --floating-total-bg-dark: #ffffff !important;
+    --floating-total-text-dark: #000000 !important;
+    --floating-total-border-dark: #dddddd !important;
+  }
+
+  /* General element reset for print, if not covered by variable overrides */
+  * {
+    background-color: transparent !important; /* Try to make all backgrounds transparent unless specified */
+    color: #000000 !important; /* Force all text to black */
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  #floating-order-total, .page-header, footer, .filter-controls, 
+  .order-simulation-area button#btn-simulate-order, 
+  .header-buttons button#btn-theme, 
   #btn-export.hide-on-print, #btn-export.hide-on-print-temp 
    { display: none !important; }
-  .table-container-scrollable { overflow-x: visible; border:none; }
-  .table-brand { page-break-inside: avoid; border: 1px solid #dee2e6 !important; font-size: 9pt; min-width: auto !important; table-layout: auto !important; }
-  .table-brand th, .table-brand td { border: none !important; border-bottom: 1px solid #dee2e6 !important; padding: 5px !important; word-wrap: break-word; }
-  .table-brand thead th { background-color: #f8f9fa !important; border-bottom-width: 2px !important; }
-  .table-brand tbody tr.product-data-row:nth-child(odd) { background-color: #fff !important; }
+
+  .table-container-scrollable { overflow-x: visible !important; border: 1px solid #dee2e6 !important; } /* Add border for print */
+  .table-brand { 
+    page-break-inside: avoid !important; 
+    border: none !important; /* Remove table border, container has it */
+    font-size: 9pt !important; 
+    min-width: auto !important; 
+    table-layout: auto !important; 
+    background-color: #ffffff !important; /* Ensure table itself has white bg */
+  }
+  .table-brand th, .table-brand td { 
+    border: none !important; 
+    border-bottom: 1px solid #dee2e6 !important; 
+    padding: 5px !important; 
+    word-wrap: break-word !important; 
+    color: #000000 !important;
+    background-color: #ffffff !important;
+  }
+  .table-brand thead th { 
+    background-color: #f8f9fa !important; 
+    border-bottom-width: 2px !important; 
+    color: #000000 !important;
+  }
+  .table-brand tbody tr.product-data-row:nth-child(odd) { background-color: #ffffff !important; }
   .table-brand tbody tr.product-data-row:nth-child(even) { background-color: #f8f9fa !important; }
   .quantity-column-header, .quantity-column-cell { display: table-cell !important; }
-  .quantity-control { justify-content: flex-end; } .quantity-btn { display: none; }
-  .quantity-display { border: none; background: transparent; text-align: right; width: auto; padding: 0; font-weight: normal; }
-  .category-header { background-color: #f8f9fa !important; border-bottom-width: 1px !important; }
-  .order-summary { margin-top: 0; padding-top: 0; border-top: none; box-shadow: none; }
-  .order-summary-table-container { overflow-x: visible; }
-  .order-summary-table { font-size: 9pt; min-width: auto !important; }
-  .order-summary-table th, .order-summary-table td { padding: 5px !important; border-bottom: 1px solid #dee2e6 !important;}
+  .quantity-control { justify-content: flex-end !important; } 
+  .quantity-btn { display: none !important; }
+  .quantity-display { border: none !important; background: transparent !important; text-align: right !important; width: auto !important; padding: 0 !important; font-weight: normal !important; color: #000000 !important;}
+  .category-header { background-color: #f8f9fa !important; border-bottom-width: 1px !important; color: #000000 !important;}
+  .category-header > th { color: #000000 !important; } /* Ensure category header text is black */
+
+  .order-summary { margin-top: 0 !important; padding-top: 0 !important; border-top: none !important; box-shadow: none !important; color: #000000 !important; background-color: #ffffff !important;}
+  .order-summary-table-container { overflow-x: visible !important; }
+  .order-summary-table { font-size: 9pt !important; min-width: auto !important; background-color: #ffffff !important;}
+  .order-summary-table th, .order-summary-table td { padding: 5px !important; border-bottom: 1px solid #dee2e6 !important; color: #000000 !important; background-color: #ffffff !important;}
   .order-summary-table th { background-color: #f8f9fa !important;}
   .order-summary-table tr.product-data-row:nth-child(odd) { background-color: #fff !important; }
   .order-summary-table tr.product-data-row:nth-child(even) { background-color: #f8f9fa !important; }
-  body, .page-banner, .table-brand .brand-banner, .table-brand thead th, .table-brand tr, .tag, .category-header { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  
+  .brand-banner { background-color: #cccccc !important; /* Neutral banner for print */ color: #000000 !important; }
+  .brand-banner img { filter: grayscale(100%); /* Optional: make logos grayscale for print */ }
+
+  .tag { color: #000000 !important; background-color: #eeeeee !important; border: 1px solid #dddddd !important;} /* Neutral tags for print */
+  
+  body, .page-banner, .table-brand .brand-banner, .table-brand thead th, .table-brand tr, .tag, .category-header { 
+    -webkit-print-color-adjust: exact !important; 
+    print-color-adjust: exact !important; 
+  }
 }
 
 body.pdf-export-active .page-header, body.pdf-export-active footer, body.pdf-export-active .filter-controls, body.pdf-export-active .order-simulation-area button#btn-simulate-order, body.pdf-export-active #tabela-container, body.pdf-export-active .header-buttons, body.pdf-export-active .table-container-scrollable, body.pdf-export-active #floating-order-total { display: none !important; }
