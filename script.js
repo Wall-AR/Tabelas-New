@@ -1,21 +1,21 @@
 // script.js
 document.addEventListener('DOMContentLoaded', () => {
-  let orderInterfaceActive = false; 
-  let currentSimulatedItems = []; 
+  let orderInterfaceActive = false;
+  let currentSimulatedItems = [];
 
-  const definedCategories = [ 
+  const definedCategories = [
     "Cápsulas", "Extratos Líquidos (gotas)", "Chás Medicinais", "Novidades",
     "Último Lote", "Promoções", "Populares", "Óleos", "Pós", "Gomas", "Cartelas", "Blends", "Outros"
   ];
 
   // Use a valid 1x1 transparent PNG Base64 string as a placeholder
-  const logoBase64Purafor = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="; 
-  const quoteLogoBase64 = logoBase64Purafor; 
+  const logoBase64Purafor = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+  const quoteLogoBase64 = logoBase64Purafor;
 
-  let tableData = [ 
+  let tableData = [
     {
-      brand: '', 
-      logo: 'images/purafor-logo.png', 
+      brand: '',
+      logo: 'images/purafor-logo.png',
       colorVar: '--color-purafor',
       items: [
         { desc: 'Artrion 60caps', unit: 31.46, tag: '', category: 'Cápsulas' },
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { desc: 'Cúrcuma Longa com Curcumina 60caps', unit: 16.48, tag: '', category: 'Cápsulas' },
         { desc: 'CO-MAG 60caps', unit: 26.00, tag: '', category: 'Cápsulas' },
         { desc: 'Caffeine 60caps - Microencapsulada 200mg Softgel', unit: 20.67, tag: '', category: 'Cápsulas' },
-        { desc: 'Derma B - Biotina Gummy 30gomas - Morango', unit: 35.79, tag: 'ultimo-lote', category: 'Gomas' }, 
+        { desc: 'Derma B - Biotina Gummy 30gomas - Morango', unit: 35.79, tag: 'ultimo-lote', category: 'Gomas' },
         { desc: 'D3 + K2 30caps (2000UI / 159mcg)', unit: 11.91, tag: '', category: 'Cápsulas' },
         { desc: 'Ferrofor + C 60caps', unit: 13.07, tag: 'novo', category: 'Novidades' },
         { desc: 'Feno Grego 60caps', unit: 13.81, tag: 'novo', category: 'Novidades' },
@@ -45,8 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { desc: 'Mag 6 60caps (seis magnésios)', unit: 14.45, tag: '', category: 'Cápsulas' },
         { desc: 'Óleo de Primula 60caps Softgel', unit: 20.67, tag: '', category: 'Óleos' },
         { desc: 'Óleo de Semente de Abóbora 1000mg 60caps', unit: 31.26, tag: 'novo', category: 'Óleos' },
-        { desc: 'Ômega 3 IFOS 60caps 1gr Softgel', unit: 37.31, tag: '', category: 'Óleos' }, 
-        { desc: 'Ômega 3, 6, 9 60caps 1gr Softgel', unit: 31.26, tag: '', category: 'Óleos' }, 
+        { desc: 'Ômega 3 IFOS 60caps 1gr Softgel', unit: 37.31, tag: '', category: 'Óleos' },
+        { desc: 'Ômega 3, 6, 9 60caps 1gr Softgel', unit: 31.26, tag: '', category: 'Óleos' },
         { desc: 'PEA-600 60caps', unit: 24.29, tag: 'novo', category: 'Novidades' },
         { desc: 'Picolinato de Cromo 30caps', unit: 12.67, tag: '', category: 'Cápsulas' },
         { desc: 'Reartron 60caps', unit: 30.04, tag: '', category: 'Cápsulas' },
@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ]
     },
     {
-      brand: '', 
-      logo: 'images/reavita-logo.png', 
+      brand: '',
+      logo: 'images/reavita-logo.png',
       colorVar: '--color-reavita',
       items: [
         { desc: 'Amargo Detox 60cap', unit: 12.25, tag: '', category: 'Cápsulas' },
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ]
     }
   ];
-  
+
   function assignCategory(item, forcePortuguese = false) {
     if (item.category && !forcePortuguese && definedCategories.includes(item.category)) {
         if (item.category === "Populares") { return "Populares"; }
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (item.category && definedCategories.includes(item.category) && (forcePortuguese || item.category === "Populares")) {
         return item.category;
     }
-    if (forcePortuguese && item.category && item.category !== "Populares") { 
+    if (forcePortuguese && item.category && item.category !== "Populares") {
         const map = { "Capsules": "Cápsulas", "Liquid extracts (drops)": "Extratos Líquidos (gotas)", "Herbal teas": "Chás Medicinais", "New arrivals": "Novidades", "Last batch": "Último Lote", "Promotions": "Promoções", "Oils": "Óleos", "Powders": "Pós", "Gummies": "Gomas", "Blister packs": "Cartelas"};
         if (map[item.category]) { return map[item.category]; }
     }
@@ -124,16 +124,16 @@ document.addEventListener('DOMContentLoaded', () => {
   tableData.forEach((brand, brandIndex) => {
     brand.items.forEach((item, itemIndex) => {
       item.id = `brand${brandIndex}_item${itemIndex}`;
-      item.quantity = 0; 
-      item.category = assignCategory(item, true); 
+      item.quantity = 0;
+      item.category = assignCategory(item, true);
     });
   });
-  
-  const originalTableData = JSON.parse(JSON.stringify(tableData)); 
+
+  const originalTableData = JSON.parse(JSON.stringify(tableData));
 
   originalTableData.forEach(brandData => {
     brandData.items.forEach(item => {
-      item.category = assignCategory(item); 
+      item.category = assignCategory(item);
     });
   });
 
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnExportEl = document.getElementById('btn-export');
   const btnThemeEl = document.getElementById('btn-theme');
   const btnSimulateOrderEl = document.getElementById('btn-simulate-order');
-  const floatingTotalEl = document.getElementById('floating-order-total'); 
+  const floatingTotalEl = document.getElementById('floating-order-total');
 
   function populateCategoryFilter() {
     const categoriesFromData = new Set();
@@ -158,16 +158,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     const allDisplayCategories = [];
     definedCategories.forEach(definedCat => {
-        if (definedCat === "Populares" || categoriesFromData.has(definedCat)) { 
+        if (definedCat === "Populares" || categoriesFromData.has(definedCat)) {
             allDisplayCategories.push(definedCat);
-            categoriesFromData.delete(definedCat); 
+            categoriesFromData.delete(definedCat);
         }
     });
-    categoriesFromData.forEach(cat => allDisplayCategories.push(cat)); 
-    categoryFilterEl.innerHTML = ''; 
+    categoriesFromData.forEach(cat => allDisplayCategories.push(cat));
+    categoryFilterEl.innerHTML = '';
     const allOption = document.createElement('option');
     allOption.value = 'all';
-    allOption.textContent = 'Todas as Categorias'; 
+    allOption.textContent = 'Todas as Categorias';
     categoryFilterEl.appendChild(allOption);
     const uniqueDisplayCategories = [...new Set(allDisplayCategories)];
     uniqueDisplayCategories.forEach(categoryText => {
@@ -183,25 +183,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderTables(dataToRender) {
     document.body.classList.toggle('order-interface-visible', orderInterfaceActive);
-    tabelaContainer.innerHTML = ''; 
-    dataToRender.forEach((brandData) => { 
+    tabelaContainer.innerHTML = '';
+    dataToRender.forEach((brandData) => {
       if (brandData.items.length === 0) { return; }
-      const tableScrollContainer = document.createElement('div'); 
+      const tableScrollContainer = document.createElement('div');
       tableScrollContainer.className = 'table-container-scrollable';
       const tbl = document.createElement('table');
       tbl.className = 'table-brand';
       const colgroup = document.createElement('colgroup');
       // const colWidths = ['50%', '15%', '15%', '20%']; // This line was removed.
-      for(let i = 0; i < 3; i++) { 
+      for(let i = 0; i < 3; i++) {
         const col = document.createElement('col');
         colgroup.appendChild(col);
       }
-      const qtyCol = document.createElement('col'); 
+      const qtyCol = document.createElement('col');
       colgroup.appendChild(qtyCol);
       tbl.appendChild(colgroup);
       const bannerRow = document.createElement('tr');
       const bannerCell = document.createElement('th');
-      bannerCell.colSpan = 4; 
+      bannerCell.colSpan = 4;
       const bannerDiv = document.createElement('div');
       bannerDiv.className = 'brand-banner';
       bannerDiv.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(brandData.colorVar);
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const thead = document.createElement('thead');
       thead.appendChild(bannerRow);
       const hdr = document.createElement('tr');
-      hdr.innerHTML = `<th>Descrição do Produto</th><th>Unidade</th><th>Caixa (12 un)</th><th class="quantity-column-header">Quantidade</th>`; 
+      hdr.innerHTML = `<th>Descrição do Produto</th><th>Unidade</th><th>Caixa (12 un)</th><th class="quantity-column-header">Quantidade</th>`;
       thead.appendChild(hdr);
       tbl.appendChild(thead);
       const tbody = document.createElement('tbody');
@@ -224,20 +224,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (itemsInCategory.length > 0) {
           const categoryRow = document.createElement('tr');
           const categoryCell = document.createElement('th');
-          categoryCell.colSpan = 4; 
+          categoryCell.colSpan = 4;
           categoryCell.className = 'category-header';
-          categoryCell.textContent = categoryPT; 
+          categoryCell.textContent = categoryPT;
           categoryRow.appendChild(categoryCell);
           tbody.appendChild(categoryRow);
           itemsInCategory.forEach(item => {
             const tr = document.createElement('tr');
-            tr.className = 'product-data-row'; 
+            tr.className = 'product-data-row';
             const tdDesc = document.createElement('td');
             tdDesc.textContent = item.desc;
             if (item.tag) {
               const spanTag = document.createElement('span');
               spanTag.className = `tag ${item.tag}`;
-              spanTag.textContent = item.tag.toUpperCase(); 
+              spanTag.textContent = item.tag.toUpperCase();
               tdDesc.appendChild(spanTag);
             }
             tr.appendChild(tdDesc);
@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tdBox.textContent = `R$ ${(item.unit * 12).toFixed(2)}`;
             tr.appendChild(tdBox);
             const tdQty = document.createElement('td');
-            tdQty.className = 'quantity-column-cell'; 
+            tdQty.className = 'quantity-column-cell';
             const qtyControlDiv = document.createElement('div');
             qtyControlDiv.className = 'quantity-control';
             const decreaseBtn = document.createElement('button');
@@ -257,8 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
             decreaseBtn.dataset.productId = item.id;
             const displaySpan = document.createElement('span');
             displaySpan.className = 'quantity-display';
-            displaySpan.dataset.productId = item.id; 
-            displaySpan.textContent = item.quantity; 
+            displaySpan.dataset.productId = item.id;
+            displaySpan.textContent = item.quantity;
             const increaseBtn = document.createElement('button');
             increaseBtn.className = 'quantity-btn quantity-increase';
             increaseBtn.textContent = '+';
@@ -273,8 +273,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
       tbl.appendChild(tbody);
-      tableScrollContainer.appendChild(tbl); 
-      tabelaContainer.appendChild(tableScrollContainer); 
+      tableScrollContainer.appendChild(tbl);
+      tabelaContainer.appendChild(tableScrollContainer);
     });
      if (tabelaContainer.innerHTML === '') {
         tabelaContainer.innerHTML = '<p class="no-results-message">Nenhum item corresponde aos filtros selecionados.</p>';
@@ -340,16 +340,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function simulateOrder() {
-    currentSimulatedItems = []; 
+    currentSimulatedItems = [];
     let grandTotal = 0;
     originalTableData.forEach(brand => {
       brand.items.forEach(item => {
         if (item.quantity > 0) {
           const itemTotal = item.unit * item.quantity;
-          currentSimulatedItems.push({ 
+          currentSimulatedItems.push({
             desc: item.desc,
             unitPrice: item.unit,
-            quantity: item.quantity, 
+            quantity: item.quantity,
             total: itemTotal
           });
           grandTotal += itemTotal;
@@ -357,9 +357,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    updateFloatingTotal(grandTotal); 
+    updateFloatingTotal(grandTotal);
 
-    orderSimulationSummaryEl.innerHTML = ''; 
+    orderSimulationSummaryEl.innerHTML = '';
     if (currentSimulatedItems.length > 0) {
       let summaryHTML = `<div class="pdf-logo-placeholder"><img src="${quoteLogoBase64}" alt="Logo da Empresa" class="pdf-quote-logo"></div>`;
       summaryHTML += `<h2 class="quote-title">Cotação de Pedido</h2>`;
@@ -374,31 +374,31 @@ document.addEventListener('DOMContentLoaded', () => {
       summaryHTML += `</tbody><tfoot><tr><td colspan="3" style="text-align:right; font-weight:bold;">Total Geral:</td><td class="grand-total-cell" style="font-weight:bold;">R$ ${grandTotal.toFixed(2)}</td></tr></tfoot></table></div>`;
       summaryHTML += `<div class="pdf-quote-footer"><p>Endereço da Empresa | Telefone | email@example.com</p><p>&copy; ${new Date().getFullYear()} Nome da Empresa. Todos os direitos reservados.</p></div>`;
       orderSimulationSummaryEl.innerHTML = summaryHTML;
-      if (orderInterfaceActive) { 
+      if (orderInterfaceActive) {
           btnExportEl.textContent = 'Exportar Cotação PDF';
       }
     } else {
-      orderSimulationSummaryEl.innerHTML = '<p>Por favor, insira quantidades nos produtos para simular um pedido.</p>'; 
-      btnExportEl.textContent = 'Exportar Catálogo PDF'; 
+      orderSimulationSummaryEl.innerHTML = '<p>Por favor, insira quantidades nos produtos para simular um pedido.</p>';
+      btnExportEl.textContent = 'Exportar Catálogo PDF';
     }
   }
-  
+
   btnSimulateOrderEl.addEventListener('click', () => {
     if (!orderInterfaceActive) {
       orderInterfaceActive = true;
       document.body.classList.add('order-interface-visible');
       btnSimulateOrderEl.textContent = 'Atualizar Pedido';
     }
-    simulateOrder(); 
+    simulateOrder();
   });
 
   function filterData() {
-    const selectedCategory = categoryFilterEl.value; 
-    const selectedStockStatus = stockStatusFilterEl.value; 
+    const selectedCategory = categoryFilterEl.value;
+    const selectedStockStatus = stockStatusFilterEl.value;
     const minPrice = parseFloat(minPriceEl.value) || 0;
     const maxPrice = parseFloat(maxPriceEl.value) || Infinity;
     const showPromotions = promotionsFilterEl.checked;
-    let filteredData = JSON.parse(JSON.stringify(originalTableData)); 
+    let filteredData = JSON.parse(JSON.stringify(originalTableData));
     filteredData = filteredData.map(brand => {
       let items = brand.items.filter(item => {
         if (selectedCategory !== 'all' && item.category !== selectedCategory) { return false; }
@@ -411,8 +411,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
       });
       return { ...brand, items: items };
-    }).filter(brand => brand.items.length > 0); 
-    renderTables(filteredData); 
+    }).filter(brand => brand.items.length > 0);
+    renderTables(filteredData);
   }
 
   function resetFilters() {
@@ -421,70 +421,70 @@ document.addEventListener('DOMContentLoaded', () => {
     minPriceEl.value = '';
     maxPriceEl.value = '';
     promotionsFilterEl.checked = false;
-    
+
     originalTableData.forEach(brand => {
       brand.items.forEach(item => {
         item.quantity = 0;
       });
     });
-    currentSimulatedItems = []; 
+    currentSimulatedItems = [];
 
     if (orderInterfaceActive) {
         orderInterfaceActive = false;
         document.body.classList.remove('order-interface-visible');
         btnSimulateOrderEl.textContent = 'Simular Pedido';
-        orderSimulationSummaryEl.innerHTML = ''; 
+        orderSimulationSummaryEl.innerHTML = '';
     }
-    updateFloatingTotal(0); 
-    renderTables(originalTableData); 
-    btnExportEl.textContent = 'Exportar Catálogo PDF'; 
+    updateFloatingTotal(0);
+    renderTables(originalTableData);
+    btnExportEl.textContent = 'Exportar Catálogo PDF';
   }
-  
+
   document.getElementById('btn-apply-filters').addEventListener('click', filterData);
   document.getElementById('btn-reset-filters').addEventListener('click', resetFilters);
-  
+
   btnExportEl.addEventListener('click', () => {
     const shouldExportQuote = orderInterfaceActive && currentSimulatedItems.length > 0;
 
     if (shouldExportQuote) {
-        document.body.classList.add('pdf-export-active'); 
+        document.body.classList.add('pdf-export-active');
         const element = orderSimulationSummaryEl;
         const opt = {
-          margin:       [15, 10, 15, 10], 
-          filename:     'cotacao_pedido.pdf', 
+          margin:       [15, 10, 15, 10],
+          filename:     'cotacao_pedido.pdf',
           image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  { scale: 2, useCORS: true, logging: false, scrollY: 0 }, 
+          html2canvas:  { scale: 2, useCORS: true, logging: false, scrollY: 0 },
           jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
         html2pdf().from(element).set(opt).save().then(() => {
-            document.body.classList.remove('pdf-export-active'); 
+            document.body.classList.remove('pdf-export-active');
         }).catch(err => {
             console.error("PDF generation error:", err);
             document.body.classList.remove('pdf-export-active');
         });
-    } else { 
-        btnExportEl.classList.add('hide-on-print-temp'); 
-        window.print(); 
-        setTimeout(() => { btnExportEl.classList.remove('hide-on-print-temp'); }, 1000); 
+    } else {
+        btnExportEl.classList.add('hide-on-print-temp');
+        window.print();
+        setTimeout(() => { btnExportEl.classList.remove('hide-on-print-temp'); }, 1000);
     }
   });
 
-  btnThemeEl.addEventListener('click', () => { 
+  btnThemeEl.addEventListener('click', () => {
     document.body.classList.toggle('dark');
-    btnThemeEl.textContent = document.body.classList.contains('dark') ? 'Tema Claro' : 'Tema Escuro'; 
+    btnThemeEl.textContent = document.body.classList.contains('dark') ? 'Tema Claro' : 'Tema Escuro';
   });
 
-  originalTableData.forEach(brand => { 
+  originalTableData.forEach(brand => {
     brand.items.forEach(item => {
       if (item.quantity === undefined) { item.quantity = 0; }
     });
   });
 
-  populateCategoryFilter(); 
-  renderTables(originalTableData); 
-  btnThemeEl.textContent = document.body.classList.contains('dark') ? 'Tema Claro' : 'Tema Escuro'; 
-  btnExportEl.textContent = 'Exportar Catálogo PDF'; 
-  updateFloatingTotal(0); 
+  populateCategoryFilter();
+  renderTables(originalTableData);
+  btnThemeEl.textContent = document.body.classList.contains('dark') ? 'Tema Claro' : 'Tema Escuro';
+  btnExportEl.textContent = 'Exportar Catálogo PDF';
+  updateFloatingTotal(0);
 });
 ```
 
@@ -496,25 +496,25 @@ Now, for Action 1, reviewing the `#btn-export` listener:
     const shouldExportQuote = orderInterfaceActive && currentSimulatedItems.length > 0;
 
     if (shouldExportQuote) {
-        document.body.classList.add('pdf-export-active'); 
+        document.body.classList.add('pdf-export-active');
         const element = orderSimulationSummaryEl;
         const opt = { // This is an object literal, not an array literal being discussed in JSHint error
           margin:       [15, 10, 15, 10], // This IS an array literal. Commas are correct. Brackets are correct.
-          filename:     'cotacao_pedido.pdf', 
+          filename:     'cotacao_pedido.pdf',
           image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  { scale: 2, useCORS: true, logging: false, scrollY: 0 }, 
+          html2canvas:  { scale: 2, useCORS: true, logging: false, scrollY: 0 },
           jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
         html2pdf().from(element).set(opt).save().then(() => {
-            document.body.classList.remove('pdf-export-active'); 
+            document.body.classList.remove('pdf-export-active');
         }).catch(err => {
             console.error("PDF generation error:", err);
             document.body.classList.remove('pdf-export-active');
         });
-    } else { 
-        btnExportEl.classList.add('hide-on-print-temp'); 
-        window.print(); 
-        setTimeout(() => { btnExportEl.classList.remove('hide-on-print-temp'); }, 1000); 
+    } else {
+        btnExportEl.classList.add('hide-on-print-temp');
+        window.print();
+        setTimeout(() => { btnExportEl.classList.remove('hide-on-print-temp'); }, 1000);
     }
   });
 ```
