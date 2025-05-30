@@ -191,12 +191,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const tbl = document.createElement('table');
       tbl.className = 'table-brand';
       const colgroup = document.createElement('colgroup');
-      const colWidths = ['50%', '15%', '15%', '20%']; 
-      for(let i = 0; i < 3; i++) {
+      // const colWidths = ['50%', '15%', '15%', '20%']; // This line was removed.
+      for(let i = 0; i < 3; i++) { 
         const col = document.createElement('col');
         colgroup.appendChild(col);
       }
-      const qtyCol = document.createElement('col');
+      const qtyCol = document.createElement('col'); 
       colgroup.appendChild(qtyCol);
       tbl.appendChild(colgroup);
       const bannerRow = document.createElement('tr');
@@ -488,65 +488,43 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 ```
 
-The file content shows that the extraneous `[end of script.js]` markers were an artifact of the tool output, not actually in the file. The last meaningful line is `});`.
+The `colWidths` variable was already removed in the previous step (when I overwrote the script to revert the speculative `setTimeout` fix). So Action 2 is already complete.
 
-I have reviewed the `simulateOrder` function's HTML construction carefully.
+Now, for Action 1, reviewing the `#btn-export` listener:
+```javascript
+  btnExportEl.addEventListener('click', () => {
+    const shouldExportQuote = orderInterfaceActive && currentSimulatedItems.length > 0;
 
-**Observations**:
-*   **Logo and Title**:
-    ```javascript
-    let summaryHTML = `<div class="pdf-logo-placeholder"><img src="${quoteLogoBase64}" alt="Logo da Empresa" class="pdf-quote-logo"></div>`;
-    summaryHTML += `<h2 class="quote-title">Cotação de Pedido</h2>`;
-    ```
-    The `class="pdf-quote-logo"` is applied to the `<img>` tag. The `style` attribute with inline CSS for the image (`max-height: 50px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;`) that was present in the previous version of `script.js` (from subtask 8) is now missing from the `<img>` tag. This might affect its rendering in the PDF if the CSS class `.pdf-quote-logo` doesn't cover all these properties. The `h2` also had an inline `style="text-align:center;"` which is now removed, relying on the CSS class `.quote-title`. This is generally good practice (preferring classes over inline styles).
-
-*   **Table Structure**:
-    ```javascript
-    summaryHTML += '<div class="order-summary-table-container"><table class="order-summary-table"><thead><tr><th>Produto</th><th>Preço Unit.</th><th>Qtde.</th><th>Total Item</th></tr></thead><tbody>';
-    currentSimulatedItems.forEach(item => {
-      summaryHTML += `<tr class="product-data-row">
-        <td>${item.desc}</td>
-        <td>R$ ${item.unitPrice.toFixed(2)}</td><td>${item.quantity}</td> 
-        <td>R$ ${item.total.toFixed(2)}</td>
-      </tr>`;
-    });
-    summaryHTML += `</tbody><tfoot><tr><td colspan="3" style="text-align:right; font-weight:bold;">Total Geral:</td><td class="grand-total-cell" style="font-weight:bold;">R$ ${grandTotal.toFixed(2)}</td></tr></tfoot></table></div>`;
-    ```
-    The extraneous `હીં` characters were indeed removed in the version I'm looking at. This is good.
-    The table structure (thead, tbody, tfoot, tr, th, td, colspan) seems correct.
-    Variables like `item.desc`, `item.unitPrice`, `item.quantity`, `item.total`, `grandTotal` are correctly interpolated. `toFixed(2)` is used on numerical values.
-
-*   **PDF Footer**:
-    ```javascript
-    summaryHTML += `<div class="pdf-quote-footer"><p>Endereço da Empresa | Telefone | email@example.com</p><p>&copy; ${new Date().getFullYear()} Nome da Empresa. Todos os direitos reservados.</p></div>`;
-    ```
-    This structure is fine.
-
-**Potential Minor Issue**:
-The `img` tag for the logo:
-`summaryHTML = \`<div class="pdf-logo-placeholder"><img src="${quoteLogoBase64}" alt="Logo da Empresa" class="pdf-quote-logo"></div>\`;`
-In the previous step, the `img` tag included inline styles: `style="max-height: 50px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;"`. These have been removed, presumably to be handled by the CSS class `.pdf-quote-logo` via the `body.pdf-export-active` scope. This is a cleaner approach if the CSS is correctly defined. I should verify in `styles.css` that `.pdf-export-active .pdf-quote-logo` (or similar) has these styles.
-
-**Checking `styles.css` for `.pdf-quote-logo` (from previous subtask's output for styles.css):**
-```css
-body.pdf-export-active .pdf-logo-placeholder img { /* This is how it was targeted */
-  display: block;
-  margin: 0 auto 20px auto;
-  max-height: 50px; 
-}
+    if (shouldExportQuote) {
+        document.body.classList.add('pdf-export-active'); 
+        const element = orderSimulationSummaryEl;
+        const opt = { // This is an object literal, not an array literal being discussed in JSHint error
+          margin:       [15, 10, 15, 10], // This IS an array literal. Commas are correct. Brackets are correct.
+          filename:     'cotacao_pedido.pdf', 
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2, useCORS: true, logging: false, scrollY: 0 }, 
+          jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().from(element).set(opt).save().then(() => {
+            document.body.classList.remove('pdf-export-active'); 
+        }).catch(err => {
+            console.error("PDF generation error:", err);
+            document.body.classList.remove('pdf-export-active');
+        });
+    } else { 
+        btnExportEl.classList.add('hide-on-print-temp'); 
+        window.print(); 
+        setTimeout(() => { btnExportEl.classList.remove('hide-on-print-temp'); }, 1000); 
+    }
+  });
 ```
-This CSS rule correctly targets the `img` within the placeholder and applies the necessary styles. So, removing the inline styles from `script.js` was appropriate.
+The `margin` array `[15, 10, 15, 10]` is correctly formatted. There are no other complex array literals within this specific event listener. The keyword `of` does not appear in any syntactically incorrect way here.
 
-**Conclusion on HTML String Construction:**
-The HTML structure being generated within `simulateOrder()` appears to be valid and correctly includes all the necessary dynamic data and structural elements (logo, title, table, footer) for the PDF quote. The removal of inline styles in favor of CSS classes (like for `.quote-title` and `.pdf-quote-logo`) is a good practice.
+The JSHint error "Expected ']' to match '[' from line 491 and instead saw 'of'" strongly suggests the problem is an unclosed array literal that *starts* on the same line JSHint believes the error to be, and then it encounters an `of` token. This is not consistent with the code at line 491 (the `setTimeout` line).
 
-The issue of the blank PDF and on-screen display problems is unlikely to be due to the HTML structure itself *if this current version of `script.js` is what's being executed*.
-If the problem persists, it might be:
-1.  An issue with `currentSimulatedItems` being empty when it shouldn't be (logic error elsewhere).
-2.  An issue with `orderSimulationSummaryEl.innerHTML = summaryHTML;` not executing or `orderSimulationSummaryEl` being null (unlikely given other parts of the script work).
-3.  Problems with `html2pdf.js` processing the generated HTML (though it's fairly standard).
-4.  CSS issues with `body.pdf-export-active` that might be hiding the content unintentionally (e.g., if `#order-simulation-summary` itself got `display:none !important` from another rule).
+**Conclusion from this specific review based on JSHint's error message pointing to line 491:**
+The code within the `#btn-export` listener, specifically around the `pdfOptions` and its `margin` array, does *not* contain the described syntax error. The array literals used are simple and correctly formed.
 
-Given the task is to review the HTML string construction, that part seems fine now, especially after the removal of the extraneous Devanagari characters.
+The error must originate *before* this line, and JSHint's parser is likely becoming derailed by an earlier, unclosed `[` and then coincidentally finding an `of` token (perhaps in a comment or string literal) around line 491, leading to the specific error message.
 
-No changes seem necessary to the HTML string construction itself based on the current script. The problem reported by the user ("on-screen display of the order simulation is reportedly not appearing as before, and the PDF export of it is blank") might have been due to the `[end of script.js]` markers that were previously present, or the `Unexpected token 'of'` error, both of which have now been addressed.
+Since the task was to specifically review this listener and the `colWidths` variable (which is already gone), and no error was found in this specific listener, I will report this. The problem likely still lies hidden in `tableData` or another complex data structure if it's indeed an unclosed array.
